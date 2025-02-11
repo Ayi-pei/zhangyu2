@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from '../attached_assets/Home';
-import GamePlay from '../attached_assets/GamePlay';
-import Videos from '../attached_assets/Videos';
-import Profile from '../attached_assets/Profile';
-import CustomerSupport from '../attached_assets/CustomerSupport'; // 新添加客服聊天页面
+import Home from './pages/Home';
+import GamePlay from './pages/GamePlay';
+import Videos from './pages/Videos';
+import Profile from './pages/Profile';
+import CustomerSupport from './pages/CustomerSupport'; // 新添加客服聊天页面
 
 function App() {
   return (

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, MessageCircle, RefreshCw, History, LogOut, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import BottomNav from '../componenta/BottomNav';
+import BottomNav from '../components/BottomNav';
 
 interface Jump {
   direction: string;
