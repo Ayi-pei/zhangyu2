@@ -9,7 +9,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      input: 'index.html', // 确保这是正确的路径
+      input: './attached_assets/index.html', // 确保这是正确的路径
     },
   },
 });
