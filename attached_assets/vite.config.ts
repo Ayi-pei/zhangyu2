@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     middlewareMode: false,
-    port: 3000, // 可以修改端口
+    port: 5173, // 可以修改端口
   },
   build: {
     rollupOptions: {
