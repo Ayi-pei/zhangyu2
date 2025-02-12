@@ -7,6 +7,9 @@ export default defineConfig({
     middlewareMode: false,
     port: 5173, // 可以修改端口
   },
+    resolve: {
+      extensions: ['.js', '.ts', '.jsx', '.tsx', '.css'],
+  },
   build: {
     rollupOptions: {
       input: "./attached_assets/index.html", // 确保这是正确的路径
