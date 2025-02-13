@@ -1,30 +1,36 @@
-// src/components/HistoryPage.tsx
-import './HistoryPage.css';
+// src/pages/LoginPage.tsx
+import { useState, useEffect } from 'react';
+import LoginForm from '../components/LoginForm';
+import { useNavigate } from 'react-router-dom';  // 使用 react-router-dom 的 useNavigate
 
-interface RechargeRecord {
-    date: string;
-    amount: number;
-    paymentMethod: string;
-  }
+const LoginPage = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();  // 获取 navigate 函数
 
-  const HistoryPage = () => {
-    // 从 localStorage 获取数据，并断言类型为 RechargeRecord[]
-    const rechargeHistory = JSON.parse(localStorage.getItem('rechargeHistory') || '[]') as RechargeRecord[];
+  useEffect(() => {
+    // 检查是否已经登录，记住我功能
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      setIsLoggedIn(true);
+      navigate('/home'); // 自动跳转到首页
+    }
+  }, [navigate]);
 
-    return (
-      <div>
-        <h2>Recharge History</h2>
-        <ul>
-          {rechargeHistory.map((record: RechargeRecord, index: number) => (
-            <li key={index}>
-              <span>
-                {record.date} - Amount: {record.amount} - Method: {record.paymentMethod}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
+  const onLoginSuccess = () => {
+    localStorage.setItem('username', 'user'); // 保存用户名
+    setIsLoggedIn(true);
+    navigate('/home'); // 登录成功后跳转
   };
 
-  export default HistoryPage;
+  return (
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      {isLoggedIn ? (
+        <div className="text-center">Welcome back!</div>
+      ) : (
+        <LoginForm onLoginSuccess={onLoginSuccess} />
+      )}
+    </div>
+  );
+};
+
+export default LoginPage;
