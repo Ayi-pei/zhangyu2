@@ -1,6 +1,8 @@
 // App.tsx
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
+import PlayPage from './pages/GamePlay';
+
 
 // 使用懒加载实现代码分割，提高初始加载速度
 const Home = lazy(() => import('./pages/Home'));
@@ -26,6 +28,7 @@ function App() {
           <Route path="/play/:mode" element={<GamePlay />} />
           <Route path="/videos" element={<Videos />} />
           <Route path="/profile" element={<Profile />} />
+
           {/* 使用统一的小写路径命名 */}
           <Route
             path="/dialog-support"
@@ -35,6 +38,14 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
+    </Router>
+  );
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/play/:path" element={<PlayPage />} />
+      </Routes>
     </Router>
   );
 }

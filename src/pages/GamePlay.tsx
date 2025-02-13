@@ -2,6 +2,7 @@ import  react from 'react';
 import { useLocation } from 'wouter';
 import { ArrowLeft, X, RefreshCw } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
+import { useParams } from 'react-router-dom';
 
 interface Jump {
   direction: string;
@@ -95,6 +96,8 @@ function GamePlay() {
   const [location] = useLocation();
   const mode = location.split('/').pop() || '3min';
   const [, setLocation] = useLocation();
+  const { gameId } = useParams();
+  console.log(gameId); // 这是你拿到的参数，可以用它做其他操作
 
   // 根据 mode 返回对应的回合时长（单位：秒）
   const getDuration = (mode: string): number => {
