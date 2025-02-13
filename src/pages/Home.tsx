@@ -33,32 +33,19 @@ function Home() {
   }, []);
 
   const handleModeSelect = (mode: GameMode) => {
-    navigate(`/play/${mode.path}`, {
-      state: {
-        mode: mode.name,
-        duration: mode.duration
-      }
-    });
+    navigate(`/play/${mode.path}`);
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#8c52ff] to-[#ff914d] pb-16">
       {/* Carousel */}
       <div className="relative h-64 overflow-hidden">
-        {carouselImages.map((img, index) => (
-          <div
-            key={index}
-            className={`absolute w-full h-full transition-opacity duration-1000 ${
-              currentSlide === index ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
-            <img
-              src={img}
-              alt={`Slide ${index + 1}`}
-              className="w-full h-full object-cover rounded-xl"
-            />
-          </div>
-        ))}
+      <div className={`flex transition-transform duration-1000 slide-${currentSlide}`}>
+     {carouselImages.map((img, index) => (
+      <img key={index} src={img} alt={`Slide ${index + 1}`} className="w-full h-64 object-cover rounded-xl flex-shrink-0" />
+      ))}
+    </div>
+
       </div>
 
       {/* Game Content */}
@@ -77,7 +64,7 @@ function Home() {
             <button
               key={mode.name}
               onClick={() => handleModeSelect(mode)}
-              className="p-6 rounded-lg bg-blue-500 text-white text-center transition-all hover:bg-blue-400 hover:scale-105 hover:shadow-lg"
+              className="p-6 rounded-lg bg-blue-500 text-white text-center transition-all hover:bg-blue-600 hover:scale-102 hover:shadow-md"
             >
               <div className="flex flex-col items-center gap-2">
                 {mode.icon}
@@ -88,7 +75,8 @@ function Home() {
         </div>
       </div>
 
-      <BottomNav />
+      {/* Fixed Bottom Navigation */}
+      <BottomNav className="fixed bottom-0 left-0 w-full" />
     </div>
   );
 }

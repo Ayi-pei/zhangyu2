@@ -2,14 +2,18 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Home, Film, Gamepad2, User } from 'lucide-react';
 import './BottomNav.css';
 
-function BottomNav() {
+interface BottomNavProps {
+  className?: string;  // 添加 className 属性
+}
+
+function BottomNav({ className = "" }: BottomNavProps) {
   const navigate = useNavigate();
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
+    <div className={`fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 ${className}`}>
       <div className="flex justify-around items-center h-16">
         <button
           onClick={() => navigate('/')}
@@ -50,4 +54,4 @@ function BottomNav() {
   );
 }
 
-export default BottomNav
+export default BottomNav;

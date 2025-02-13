@@ -21,3 +21,15 @@
     font-size: 12px;
     transition: color 0.
   }
+  /* BottomNav.css or any other stylesheet */
+.slide-0 {
+  transform: translateX(0%);
+}
+
+.slide-1 {
+  transform: translateX(-100%);
+}
+
+.slide-2 {
+  transform: translateX(-200%);
+}
