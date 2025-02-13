@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Home, Film, Gamepad2, User } from 'lucide-react';
+import './BottomNav.css';
 
 function BottomNav() {
   const navigate = useNavigate();

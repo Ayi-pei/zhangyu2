@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  react from 'react';
 import { useLocation } from 'wouter';
 import { ArrowLeft, X, RefreshCw } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
@@ -33,8 +33,8 @@ const formatTimestamp = (timestamp: number) => {
 };
 
 function JumpDialog({ isOpen, onClose, onConfirm, direction }: JumpDialogProps) {
-  const [steps, setSteps] = useState('');
-  const [error, setError] = useState('');
+  const [steps, setSteps] = react.useState('');
+  const [error, setError] = react.useState('');
   const currentBalance = parseInt(localStorage.getItem('playerBalance') || '3000', 10);
   if (!isOpen) return null;
 
@@ -60,7 +60,7 @@ function JumpDialog({ isOpen, onClose, onConfirm, direction }: JumpDialogProps) 
       <div className="bg-white rounded-lg p-6 w-80">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold">전송 {direction} 포인트</h3>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">/* 닫기 버튼 */
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-700" aria-label="닫기">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -110,7 +110,7 @@ function GamePlay() {
   const roundStartKey = `roundStart_${mode}`;
 
   // 初始化回合倒计时：若 localStorage 中有保存的回合开始时间且未超时，则计算剩余秒数；否则，开始新回合
-  const [timeLeft, setTimeLeft] = useState<number>(() => {
+  const [timeLeft, setTimeLeft] = react.useState<number>(() => {
     const currentSeoulTime = getSeoulTime();
     const savedRoundStart = localStorage.getItem(roundStartKey);
     if (savedRoundStart) {
@@ -124,13 +124,13 @@ function GamePlay() {
     return duration;
   });
 
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [currentDirection, setCurrentDirection] = useState('');
-  const [jumps, setJumps] = useState<Jump[]>(() => {
+  const [isDialogOpen, setIsDialogOpen] = react.useState(false);
+  const [currentDirection, setCurrentDirection] = react.useState('');
+  const [jumps, setJumps] = react.useState<Jump[]>(() => {
     const savedJumps = localStorage.getItem('jumpHistory');
     return savedJumps ? JSON.parse(savedJumps) : [];
   });
-  const [isSpinning, setIsSpinning] = useState(false);
+  const [isSpinning, setIsSpinning] = react.useState(false);
 
   // startNewRound：重置回合倒计时为当前模式的默认时长，保存新的回合开始时间（基于首尔时间）
   const startNewRound = () => {
@@ -140,7 +140,7 @@ function GamePlay() {
   };
 
   // 每秒更新回合倒计时（基于首尔时间）
-  useEffect(() => {
+  react.useEffect(() => {
     const timer = setInterval(() => {
       const currentSeoulTime = getSeoulTime();
       const savedRoundStart = localStorage.getItem(roundStartKey);
@@ -161,7 +161,7 @@ function GamePlay() {
   }, [mode]);
 
   // 当倒计时归零时，更新每笔 pending 投注的结果、玩家余额，并启动新回合
-  useEffect(() => {
+  react.useEffect(() => {
     if (timeLeft === 0) {
       const possibleResults = ['귀엽', '순수하', '직설적이', '섹시하'];
       const currentBets = JSON.parse(localStorage.getItem('currentBets') || '{}');
@@ -284,8 +284,8 @@ function GamePlay() {
             <button
               key={direction}
               onClick={() => handleJumpClick(direction)}
-              className={`group relative bg-gradient-to-br ${gradient} p-8 rounded-2xl 
-                         flex items-center justify-center transition-all transform hover:scale-105 
+              className={`group relative bg-gradient-to-br ${gradient} p-8 rounded-2xl
+                         flex items-center justify-center transition-all transform hover:scale-105
                          hover:shadow-lg active:scale-95 active:shadow-inner`}
               disabled={isSpinning}
             >

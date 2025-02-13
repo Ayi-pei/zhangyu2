@@ -1,0 +1,8 @@
+/* RechargeForm.css */
+.errorMessage {
+    color: red;
+  }
+
+  .successMessage {
+    color: green;
+  }

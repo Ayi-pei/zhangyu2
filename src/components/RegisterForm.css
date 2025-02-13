@@ -1,0 +1,35 @@
+/* RegisterForm.css */
+.registerContainer {
+    padding: 20px;
+    border: 1px solid #ddd;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .registerTitle {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .formGroup {
+    margin-bottom: 15px;
+  }
+
+  .formGroup label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  .formGroup input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+
+  .errorMessage {
+    color: red;
+    margin-bottom: 10px;
+    text-align: center;
+  }

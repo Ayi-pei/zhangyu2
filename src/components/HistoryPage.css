@@ -1,0 +1,18 @@
+/* HistoryPage.css */
+.history-container {
+    padding: 16px;
+  }
+
+  .history-title {
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+
+  .history-list {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .history-item {
+    margin-bottom: 4px;
+  }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react'; // 确保这里导入了 useState
 import { Play } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
 
