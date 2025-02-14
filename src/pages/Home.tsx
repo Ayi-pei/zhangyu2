@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Laptop as Octopus, Clock3, Clock5, Clock12 } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
@@ -37,7 +37,7 @@ function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-[#8c52ff] to-[#ff914d] pb-16">
+    <div className="min-h-screen bg-gradient-to-r from-[#8c52ff] to-[rgb(253,134,59)] pb-16">
       {/* Carousel */}
       <div className="relative h-64 overflow-hidden">
       <div className={`flex transition-transform duration-1000 slide-${currentSlide}`}>

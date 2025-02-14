@@ -13,7 +13,7 @@ function BottomNav({ className = "" }: BottomNavProps) {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className={`fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 ${className}`}>
+    <div className={`fixed bottom-0 left-0 right-0 ) from-[#d87482] to-[rgb(202,111,255)] ${className}`}>
       <div className="flex justify-around items-center h-16">
         <button
           onClick={() => navigate('/')}

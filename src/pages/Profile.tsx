@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // 使用React Router的钩子
 import './Profile.css'; // 引入样式文件
+import BottomNav from '../components/BottomNav';
 
 const Profile = () => {
   const [showSupportDialog, setShowSupportDialog] = useState(false);
@@ -17,16 +18,11 @@ const Profile = () => {
   // 使用 React Router 的 useNavigate 钩子来处理返回
   const navigate = useNavigate();
 
-  // 点击返回按钮的处理函数
-  const handleBack = () => {
-    navigate('/'); // 跳转到首页
-  };
-
   return (
     <div className="profile-container p-4">
       {/* 返回按钮 */}
       <button
-        onClick={handleBack}
+        onClick={() => navigate('/')} // ✅ 修正路径
         className="back-btn text-white bg-blue-500 p-2 rounded-md"
         aria-label="返回首页"
       >
@@ -54,13 +50,13 @@ const Profile = () => {
 
       {/* 功能部分 */}
       <div className="functions mt-6 space-y-4">
-        <button className="function-btn w-full p-3 text-white bg-green-500 rounded-md">
+        <button onClick={() => navigate('/history')} className="function-btn w-full p-3 text-white bg-green-500 rounded-md">
           历史记录
         </button>
-        <button className="function-btn w-full p-3 text-white bg-yellow-500 rounded-md">
-          绑卡-兑换
+        <button onClick={() => navigate('/bindingform')} className="function-btn w-full p-3 text-white bg-yellow-500 rounded-md">
+          绑卡
         </button>
-        <button className="function-btn w-full p-3 text-white bg-blue-500 rounded-md">
+        <button onClick={() => navigate('/rechargeform')} className="function-btn w-full p-3 text-white bg-blue-500 rounded-md">
           积分补充
         </button>
         <button
@@ -69,14 +65,14 @@ const Profile = () => {
         >
           客服支持
         </button>
-        <button className="function-btn w-full p-3 text-white bg-red-500 rounded-md">
+        <button onClick={() => navigate('/')} className="function-btn w-full p-3 text-white bg-red-500 rounded-md">
           结束退出
         </button>
       </div>
 
       {/* 客服支持弹窗 */}
       {showSupportDialog && (
-        <div className={`support-dialog ${showSupportDialog ? 'show' : ''} fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center`}>
+        <div className="support-dialog fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg w-1/3">
             <h3 className="text-xl font-bold">联系客服</h3>
             <button
@@ -88,6 +84,9 @@ const Profile = () => {
           </div>
         </div>
       )}
+
+      {/* 底部导航栏 */}
+      <BottomNav className="fixed bottom-0 left-0 w-full" />
     </div>
   );
 };

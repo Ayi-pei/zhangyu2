@@ -1,51 +1,70 @@
-// App.tsx
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { lazy, Suspense } from 'react';
-import PlayPage from './pages/GamePlay';
+import { lazy, Suspense, useState } from 'react';
 
-
-// 使用懒加载实现代码分割，提高初始加载速度
+// 使用懒加载，提高初始加载速度
 const Home = lazy(() => import('./pages/Home'));
 const GamePlay = lazy(() => import('./pages/GamePlay'));
 const Videos = lazy(() => import('./pages/Videos'));
 const Profile = lazy(() => import('./pages/Profile'));
 const SupportDialog = lazy(() => import('./components/SupportDialog'));
-// 如果你有404页面，可以创建一个简单的 NotFound 组件
 const NotFound = lazy(() => import('./pages/NotFound'));
+const BindingForm = lazy(() => import('./components/BindingForm'));
+const RechargeForm = lazy(() => import('./components/RechargeForm')); // 修改变量名，避免命名冲突
 
 function App() {
+  // 绑卡相关的状态
+  const [bindingCardNumber, setBindingCardNumber] = useState('');
+  const [bindingBank, setBindingBank] = useState('');
+  const [bindingExchangeCode, setBindingExchangeCode] = useState('');
+  const [bindingCardHolder, setBindingCardHolder] = useState('');
+
   const handleCloseSupportDialog = () => {
-    console.log("客服对话框关闭");
-    // 在这里添加任何关闭客服对话框的逻辑，比如更新状态或清理资源
+    console.log('客服对话框关闭');
   };
 
   return (
     <Router>
-      {/* Suspense 用于在组件加载时显示加载提示 */}
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
+          {/* 主页 */}
           <Route path="/" element={<Home />} />
+
+          {/* 游戏玩法页面 */}
           <Route path="/play/:mode" element={<GamePlay />} />
+
+          {/* 视频页 */}
           <Route path="/videos" element={<Videos />} />
+
+          {/* 个人中心 */}
           <Route path="/profile" element={<Profile />} />
 
-          {/* 使用统一的小写路径命名 */}
+          {/* 绑卡页面，正确传递 props */}
           <Route
-            path="/dialog-support"
-            element={<SupportDialog onClose={handleCloseSupportDialog} />}
-          />
-          {/* 404 页面，匹配所有未定义的路由 */}
+  path="/binding"
+  element={
+    <BindingForm
+      bindingCardNumber={bindingCardNumber}
+      setBindingCardNumber={setBindingCardNumber}
+      bindingBank={bindingBank}
+      setBindingBank={setBindingBank}
+      bindingExchangeCode={bindingExchangeCode}
+      setBindingExchangeCode={setBindingExchangeCode}
+      bindingCardHolder={bindingCardHolder}
+      setBindingCardHolder={setBindingCardHolder}
+      onSubmit={() => console.log('提交绑卡')}
+    />
+  }
+/>
+          {/* 充值页面 */}
+          <Route path="/recharge" element={<RechargeForm />} />
+
+          {/* 客服支持对话框 */}
+          <Route path="/dialog-support" element={<SupportDialog onClose={handleCloseSupportDialog} />} />
+
+          {/* 404 页面 */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
-    </Router>
-  );
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/play/:path" element={<PlayPage />} />
-      </Routes>
     </Router>
   );
 }

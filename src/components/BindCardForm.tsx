@@ -1,5 +1,6 @@
 // src/components/RechargeForm.tsx
-import React, { useState } from 'react';
+import { useState } from 'react'
+
 
 const RechargeForm = () => {
   const [amount, setAmount] = useState('');

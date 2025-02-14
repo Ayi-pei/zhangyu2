@@ -1,6 +1,5 @@
 // src/pages/NotFound.tsx
-import React from 'react';
-import './NotFound.css'; // 导入外部样式
+import '../components/NotFound.css'; // 导入外部样式
 
 const NotFound: React.FC = () => {
   return (
