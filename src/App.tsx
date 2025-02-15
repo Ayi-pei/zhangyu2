@@ -11,6 +11,8 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 const BindingForm = lazy(() => import('./components/BindingForm'));
 const RechargeForm = lazy(() => import('./components/RechargeForm')); // 修改变量名，避免命名冲突
 const History = lazy(() => import('./pages/History'));
+const ExchangeForm = lazy(() => import('./components/ExchangeForm'));
+const RegisterForm = lazy(() => import('./components/RegisterForm'));
 function App() {
   // 绑卡相关的状态
   const [bindingCardNumber, setBindingCardNumber] = useState('');
@@ -63,6 +65,9 @@ function App() {
 
           <Route path="/history" element={<History />} />
 
+          <Route path="/exchangeform" element={<ExchangeForm />} />
+
+          <Route path="/register" element={<RegisterForm />} />
           {/* 404 页面 */}
           <Route path="*" element={<NotFound />} />
         </Routes>
