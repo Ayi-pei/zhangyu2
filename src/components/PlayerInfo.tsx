@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface PlayerInfoProps {
   avatar: string;
   nickname: string;

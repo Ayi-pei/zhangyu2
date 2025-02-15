@@ -1,18 +1,18 @@
-/* HistoryPage.css */
-.history-container {
+/* LoginPage.css */
+.login-container {
     padding: 16px;
   }
 
-  .history-title {
+  .login-title {
     font-size: 24px;
     margin-bottom: 8px;
   }
 
-  .history-list {
+  .login-list {
     list-style-type: none;
     padding: 0;
   }
 
-  .history-item {
+  .login-item {
     margin-bottom: 4px;
   }

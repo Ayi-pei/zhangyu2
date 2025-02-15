@@ -1,33 +1,29 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import LoginForm from '../components/LoginForm';
-import { useNavigate } from 'react-router-dom';  // 使用 useNavigate 进行页面跳转
 
 const LoginPage = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const navigate = useNavigate();  // 获取 navigate 函数
+  const navigate = useNavigate();
+  const hasCheckedLogin = useRef(false); // 避免 useEffect 重复执行
 
   useEffect(() => {
-    // 检查是否已经登录，记住我功能
+    if (hasCheckedLogin.current) return;
+    hasCheckedLogin.current = true;
+
     const storedUsername = localStorage.getItem('username');
     if (storedUsername) {
-      setIsLoggedIn(true);
-      navigate('/home'); // 自动跳转到首页
+      navigate('/home', { replace: true });
     }
   }, [navigate]);
 
   const onLoginSuccess = () => {
-    localStorage.setItem('username', 'user'); // 保存用户名
-    setIsLoggedIn(true);
-    navigate('/home'); // 登录成功后跳转
+    localStorage.setItem('username', 'user');
+    navigate('/home', { replace: true });
   };
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      {isLoggedIn ? (
-        <div className="text-center">Welcome back!</div>
-      ) : (
-        <LoginForm onLoginSuccess={onLoginSuccess} />
-      )}
+      <LoginForm onLoginSuccess={onLoginSuccess} />
     </div>
   );
 };
