@@ -58,7 +58,7 @@ function App() {
   }
 />
           {/* 充值页面 */}
-          <Route path="/recharge" element={<RechargeForm />} />
+          <Route path="/rechargeform" element={<RechargeForm />} />
 
           {/* 客服支持对话框 */}
           <Route path="/supportdialog" element={<SupportDialog onClose={handleCloseSupportDialog} />} />

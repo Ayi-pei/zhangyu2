@@ -59,10 +59,7 @@ const Profile = () => {
         <button  type="button" onClick={() => navigate('/rechargeform')} className="function-btn w-full p-3 text-white bg-blue-500 rounded-md">
           积分补充
         </button>
-        <button type="button"
-          className="function-btn w-full p-3 text-white bg-purple-500 rounded-md"
-          onClick={() => setShowSupportDialog(true)}
-        >
+        <button type="button" onClick={() => navigate('/supportdialog')} className="function-btn w-full p-3 text-white bg-purple-500 rounded-md">
           客服支持
         </button>
         <button type="button" onClick={() => navigate('/')} className="function-btn w-full p-3 text-white bg-red-500 rounded-md">
