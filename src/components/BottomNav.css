@@ -1,27 +1,41 @@
 /* BottomNav.css */
 .bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: white;
-    border-top: 1px solid #ddd;
-    height: 64px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-  }
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border-top: 1px solid #e0e0e0;
+  height: 64px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
 
-  .nav-button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: #666;
-    font-size: 12px;
-    transition: color 0.
-  }
-  /* BottomNav.css or any other stylesheet */
+/* 导航按钮 */
+.nav-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #666666;
+  font-size: 12px;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* 悬停效果：按钮文字颜色变蓝，按钮微微上移 */
+.nav-button:hover {
+  color: #007bff;
+  transform: translateY(-3px);
+}
+
+/* 按钮激活状态 */
+.nav-button:active {
+  transform: translateY(0);
+}
+
+/* 轮播幻灯片相关类，可用于底部导航的额外交互（如 indicator） */
 .slide-0 {
   transform: translateX(0%);
 }
@@ -32,4 +46,11 @@
 
 .slide-2 {
   transform: translateX(-200%);
+}
+
+/* 针对小屏幕优化 */
+@media (max-width: 480px) {
+  .nav-button {
+    font-size: 10px;
+  }
 }

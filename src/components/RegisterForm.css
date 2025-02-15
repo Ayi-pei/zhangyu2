@@ -1,35 +1,54 @@
 /* RegisterForm.css */
 .registerContainer {
-    padding: 20px;
-    border: 1px solid #ddd;
-    max-width: 400px;
-    margin: 0 auto;
-  }
+  background: #fff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  max-width: 400px;
+  margin: 20px auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
 
-  .registerTitle {
-    font-size: 24px;
-    margin-bottom: 20px;
-    text-align: center;
-  }
+.registerTitle {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+}
 
-  .formGroup {
-    margin-bottom: 15px;
-  }
+.formGroup {
+  margin-bottom: 15px;
+}
 
-  .formGroup label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
+.formGroup label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #555;
+}
 
-  .formGroup input {
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-  }
+.formGroup input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
 
-  .errorMessage {
-    color: red;
-    margin-bottom: 10px;
-    text-align: center;
-  }
+.formGroup input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.errorMessage {
+  background-color: #fdecea;
+  color: #c0392b;
+  border: 1px solid #e74c3c;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  text-align: center;
+  border-radius: 4px;
+  font-size: 14px;
+}
