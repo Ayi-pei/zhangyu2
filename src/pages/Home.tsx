@@ -25,7 +25,7 @@ const carouselImages = [
 function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();  // 确保可以导航
+  const navigate = useNavigate();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -40,9 +40,9 @@ function Home() {
     }
   }, [currentSlide]);
 
-  // 处理游戏模式选择
+  // 处理游戏模式选择：同时传递 mode 和默认 gameId 参数
   const handleModeSelect = (mode: GameMode) => {
-    navigate(`/play/${mode.path}`);
+    navigate(`/play/${mode.path}/defaultGameId`);
   };
 
   return (

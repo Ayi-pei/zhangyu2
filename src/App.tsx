@@ -28,7 +28,7 @@ function App() {
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/play/:mode" element={<GamePlay />} />
+          <Route path="/play/:mode/:gameId" element={<GamePlay />} />
           <Route path="/videos" element={<Videos />} />
           <Route path="/profile" element={<Profile />} />
           <Route

@@ -1,8 +1,10 @@
-import  react from 'react';
+import react from 'react';
 import { useLocation } from 'wouter';
 import { ArrowLeft, X, RefreshCw } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
 import { useParams } from 'react-router-dom';
+import { getPlayerBalance, setPlayerBalance, getJumpHistory, setJumpHistory } from '../utils/storage';
+import { exportDataToBackend } from '../utils/api';
 
 interface Jump {
   direction: string;
@@ -36,7 +38,7 @@ const formatTimestamp = (timestamp: number) => {
 function JumpDialog({ isOpen, onClose, onConfirm, direction }: JumpDialogProps) {
   const [steps, setSteps] = react.useState('');
   const [error, setError] = react.useState('');
-  const currentBalance = parseInt(localStorage.getItem('playerBalance') || '3000', 10);
+  const currentBalance = getPlayerBalance();
   if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -94,12 +96,11 @@ function JumpDialog({ isOpen, onClose, onConfirm, direction }: JumpDialogProps) 
 
 function GamePlay() {
   const [location] = useLocation();
-  const mode = location.split('/').pop() || '3min';
+  const mode = location.split('/3min/5min/12min').pop() || '3min';
   const [, setLocation] = useLocation();
   const { gameId } = useParams();
-  console.log(gameId); // 这是你拿到的参数，可以用它做其他操作
+  console.log("游戏 ID:", gameId);
 
-  // 根据 mode 返回对应的回合时长（单位：秒）
   const getDuration = (mode: string): number => {
     switch (mode) {
       case '3min': return 180;
@@ -112,7 +113,6 @@ function GamePlay() {
   const duration = getDuration(mode);
   const roundStartKey = `roundStart_${mode}`;
 
-  // 初始化回合倒计时：若 localStorage 中有保存的回合开始时间且未超时，则计算剩余秒数；否则，开始新回合
   const [timeLeft, setTimeLeft] = react.useState<number>(() => {
     const currentSeoulTime = getSeoulTime();
     const savedRoundStart = localStorage.getItem(roundStartKey);
@@ -129,20 +129,15 @@ function GamePlay() {
 
   const [isDialogOpen, setIsDialogOpen] = react.useState(false);
   const [currentDirection, setCurrentDirection] = react.useState('');
-  const [jumps, setJumps] = react.useState<Jump[]>(() => {
-    const savedJumps = localStorage.getItem('jumpHistory');
-    return savedJumps ? JSON.parse(savedJumps) : [];
-  });
+  const [jumps, setJumps] = react.useState<Jump[]>(() => getJumpHistory());
   const [isSpinning, setIsSpinning] = react.useState(false);
 
-  // startNewRound：重置回合倒计时为当前模式的默认时长，保存新的回合开始时间（基于首尔时间）
   const startNewRound = () => {
     const currentSeoulTime = getSeoulTime();
     localStorage.setItem(roundStartKey, currentSeoulTime.toString());
     setTimeLeft(duration);
   };
 
-  // 每秒更新回合倒计时（基于首尔时间）
   react.useEffect(() => {
     const timer = setInterval(() => {
       const currentSeoulTime = getSeoulTime();
@@ -163,12 +158,10 @@ function GamePlay() {
     return () => clearInterval(timer);
   }, [mode]);
 
-  // 当倒计时归零时，更新每笔 pending 投注的结果、玩家余额，并启动新回合
   react.useEffect(() => {
     if (timeLeft === 0) {
       const possibleResults = ['귀엽', '순수하', '직설적이', '섹시하'];
       const currentBets = JSON.parse(localStorage.getItem('currentBets') || '{}');
-      // 生成两个不同的随机结果
       const result1Index = Math.floor(Math.random() * possibleResults.length);
       let result2Index = Math.floor(Math.random() * possibleResults.length);
       while (result2Index === result1Index) {
@@ -176,7 +169,6 @@ function GamePlay() {
       }
       const results = [possibleResults[result1Index], possibleResults[result2Index]];
 
-      // 更新所有 pending 状态的投注记录（jump）
       setJumps(prevJumps => {
         const updatedJumps = prevJumps.map(jump => {
           if (jump.status === 'pending') {
@@ -186,17 +178,16 @@ function GamePlay() {
               ...jump,
               results,
               pointsEarned,
-              status: 'completed' as 'pending' | 'completed'
-            };
+              status: 'completed'
+            } as Jump;
           }
           return jump;
         });
-        localStorage.setItem('jumpHistory', JSON.stringify(updatedJumps.slice(-15)));
+        setJumpHistory(updatedJumps.slice(-15));
         return updatedJumps;
       });
 
-      // 根据投注结果更新玩家余额
-      const currentBalance = parseInt(localStorage.getItem('playerBalance') || '3000', 10);
+      const currentBalance = getPlayerBalance();
       let totalEarnings = 0;
       Object.entries(currentBets).forEach(([direction, amount]) => {
         if (results.includes(getDirectionLabel(direction))) {
@@ -206,14 +197,12 @@ function GamePlay() {
         }
       });
       const newBalance = currentBalance + totalEarnings;
-      localStorage.setItem('playerBalance', newBalance.toString());
+      setPlayerBalance(newBalance);
       localStorage.setItem('currentBets', '{}');
-      // 启动新回合
       startNewRound();
     }
   }, [timeLeft]);
 
-  // 将投注方向转换为对应的标签
   const getDirectionLabel = (direction: string) => {
     switch (direction) {
       case '귀엽': return '귀엽';
@@ -235,27 +224,46 @@ function GamePlay() {
     setIsDialogOpen(true);
   };
 
-  const handleJumpConfirm = (steps: number) => {
+  const handleJumpConfirm = async (steps: number) => {
     setIsSpinning(true);
+
     const currentBets = JSON.parse(localStorage.getItem('currentBets') || '{}');
     currentBets[currentDirection] = (currentBets[currentDirection] || 0) + steps;
     localStorage.setItem('currentBets', JSON.stringify(currentBets));
-    const currentBalance = parseInt(localStorage.getItem('playerBalance') || '3000', 10);
+
+    const currentBalance = getPlayerBalance();
     const newBalance = currentBalance - steps;
-    localStorage.setItem('playerBalance', newBalance.toString());
+    setPlayerBalance(newBalance);
+
     const newJump: Jump = {
       direction: currentDirection,
       steps,
       results: [],
-      timestamp: getSeoulTime(), // 使用首尔时间戳
+      timestamp: getSeoulTime(),
       pointsEarned: 0,
       status: 'pending'
     };
     setJumps(prevJumps => {
       const newJumps = [...prevJumps, newJump];
-      localStorage.setItem('jumpHistory', JSON.stringify(newJumps.slice(-15)));
+      setJumpHistory(newJumps.slice(-15));
       return newJumps.slice(-15);
     });
+
+    const dataToSend = {
+      gameId,
+      mode,
+      selection: currentDirection,
+      points: steps,
+      jump: newJump
+    };
+
+    try {
+      const result = await exportDataToBackend(dataToSend);
+      console.log('数据成功发送到后台:', result);
+    } catch (error) {
+      console.error('数据发送失败:', error);
+    }
+
     setIsSpinning(false);
   };
 
