@@ -1,6 +1,7 @@
 import { FaTimes } from 'react-icons/fa';
-import './SupportDialog.css'; // 假如你需要额外的自定义样式
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './SupportDialog.css'; // 自定义样式
 
 interface SupportDialogProps {
   onClose: () => void;
@@ -14,6 +15,13 @@ interface Message {
 const SupportDialog: React.FC<SupportDialogProps> = ({ onClose }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [messageText, setMessageText] = useState('');
+  const navigate = useNavigate(); // React Router 跳转
+
+  // 关闭弹窗并跳转到个人中心
+  const handleClose = () => {
+    onClose(); // 关闭弹窗
+    navigate('/profile'); // 跳转到个人中心
+  };
 
   // 发送消息
   const handleSendMessage = () => {
@@ -42,7 +50,7 @@ const SupportDialog: React.FC<SupportDialogProps> = ({ onClose }) => {
           <h3 className="text-xl font-semibold text-gray-800">联系客服</h3>
           <button
             type="button"
-            onClick={onClose}
+            onClick={handleClose} // 调用封装的关闭函数
             className="text-gray-500 hover:text-gray-700 flex items-center"
             aria-label="返回"
           >

@@ -3,7 +3,7 @@ import { Home, Film, Gamepad2, User } from 'lucide-react';
 import './BottomNav.css';
 
 interface BottomNavProps {
-  className?: string;  // 添加 className 属性
+  className?: string;
 }
 
 function BottomNav({ className = "" }: BottomNavProps) {
@@ -13,43 +13,41 @@ function BottomNav({ className = "" }: BottomNavProps) {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className={`fixed bottom-0 left-0 right-0 ) from-[#d87482] to-[rgb(202,111,255)] ${className}`}>
-      <div className="flex justify-around items-center h-16">
-        <button
-          onClick={() => navigate('/')}
-          className={`flex flex-col items-center ${isActive('/') ? 'text-blue-600' : 'text-gray-600'}`}
-        >
-          <Home className="w-6 h-6" />
-          <span className="text-xs mt-1">홈</span>
-        </button>
-        <button
-          onClick={() => navigate('/videos')}
-          className={`flex flex-col items-center ${isActive('/videos') ? 'text-blue-600' : 'text-gray-600'}`}
-        >
-          <Film className="w-6 h-6" />
-          <span className="text-xs mt-1">동영상</span>
-        </button>
-        <button
-          onClick={() => {
-            if (location.pathname === '/') {
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            } else {
-              navigate('/');
-            }
-          }}
-          className={`flex flex-col items-center ${isActive('/game') ? 'text-blue-600' : 'text-gray-600'}`}
-        >
-          <Gamepad2 className="w-6 h-6" />
-          <span className="text-xs mt-1">게임</span>
-        </button>
-        <button
-          onClick={() => navigate('/profile')}
-          className={`flex flex-col items-center ${isActive('/profile') ? 'text-blue-600' : 'text-gray-600'}`}
-        >
-          <User className="w-6 h-6" />
-          <span className="text-xs mt-1">내 페이지</span>
-        </button>
-      </div>
+    <div className={`bottom-nav ${className}`}>
+      <button
+        onClick={() => navigate('/')}
+        className={`nav-button ${isActive('/') ? 'active' : ''}`}
+      >
+        <Home className="w-6 h-6" />
+        <span>홈</span>
+      </button>
+      <button
+        onClick={() => navigate('/videos')}
+        className={`nav-button ${isActive('/videos') ? 'active' : ''}`}
+      >
+        <Film className="w-6 h-6" />
+        <span>동영상</span>
+      </button>
+      <button
+        onClick={() => {
+          if (location.pathname === '/') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          } else {
+            navigate('/');
+          }
+        }}
+        className={`nav-button ${isActive('/game') ? 'active' : ''}`}
+      >
+        <Gamepad2 className="w-6 h-6" />
+        <span>게임</span>
+      </button>
+      <button
+        onClick={() => navigate('/profile')}
+        className={`nav-button ${isActive('/profile') ? 'active' : ''}`}
+      >
+        <User className="w-6 h-6" />
+        <span>내 페이지</span>
+      </button>
     </div>
   );
 }

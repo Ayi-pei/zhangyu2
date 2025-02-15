@@ -216,10 +216,10 @@ function GamePlay() {
   // 将投注方向转换为对应的标签
   const getDirectionLabel = (direction: string) => {
     switch (direction) {
-      case '前': return '귀엽';
-      case '后': return '순수하';
-      case '左': return '직설적이';
-      case '右': return '섹시하';
+      case '귀엽': return '귀엽';
+      case '순수하': return '순수하';
+      case '직설적이': return '직설적이';
+      case '섹시하': return '섹시하';
       default: return '';
     }
   };
@@ -279,10 +279,10 @@ function GamePlay() {
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-2 gap-6 max-w-md mx-auto">
           {[
-            { direction: '前', label: '귀엽', gradient: 'from-pink-500 to-rose-500' },
-            { direction: '后', label: '순수하', gradient: 'from-purple-500 to-indigo-500' },
-            { direction: '左', label: '직설적이', gradient: 'from-blue-500 to-cyan-500' },
-            { direction: '右', label: '섹시하', gradient: 'from-orange-500 to-amber-500' }
+            { direction: '귀엽', label: '귀엽', gradient: 'from-pink-500 to-rose-500' },
+            { direction: '순수하', label: '순수하', gradient: 'from-purple-500 to-indigo-500' },
+            { direction: '직설적이', label: '직설적이', gradient: 'from-blue-500 to-cyan-500' },
+            { direction: '섹시하', label: '섹시하', gradient: 'from-orange-500 to-amber-500' }
           ].map(({ direction, label, gradient }) => (
             <button
               key={direction}
