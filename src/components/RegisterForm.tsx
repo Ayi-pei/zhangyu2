@@ -1,8 +1,8 @@
 // src/components/RegisterForm.tsx
-import { useState } from 'react';
+import React, { useState } from 'react';
 import './RegisterForm.css';
 
-const RegisterForm = () => {
+const RegisterForm: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -23,7 +23,7 @@ const RegisterForm = () => {
       return;
     }
 
-    // 假设这里调用一个注册 API，成功后进行处理
+    // 模拟注册 API 调用，成功后处理
     console.log(`Registering user: ${username}, Email: ${email}`);
     setErrorMessage('');
     // 清空表单
@@ -34,47 +34,55 @@ const RegisterForm = () => {
   };
 
   return (
-    <div>
-      <h2>Register</h2>
+    <div className="registerContainer">
+      <h2 className="registerTitle">注册账号</h2>
+      {errorMessage && <div className="errorMessage">{errorMessage}</div>}
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Username:</label>
-          <input title = "사용자 이름은 최소 6자 이상이어야 합니다"
+        <div className="formGroup">
+          <label htmlFor="username">用户名</label>
+          <input
+            title="사용자 이름은 최소 6자 이상이어야 합니다"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            required
+            placeholder="请输入用户名"
           />
         </div>
-        <div>
-          <label>Email:</label>
-          <input title = "이메일을 입력하세요."
-            type="Email"
+        <div className="formGroup">
+          <label htmlFor="email">邮箱</label>
+          <input
+            id="email"
+            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
+            placeholder="请输入邮箱"
           />
         </div>
-        <div>
-          <label>Password:</label>
-          <input title = "비밀번호는 최소 8자 이상이어야 하며, 대문자와 소문자, 숫자가 포함되어야 합니다"
+        <div className="formGroup">
+          <label htmlFor="password">密码</label>
+          <input
+            id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
+            placeholder="请输入密码"
           />
         </div>
-        <div>
-          <label>Confirm Password:</label>
-          <input title = "비밀번호를 다시 입력하세요."
+        <div className="formGroup">
+          <label htmlFor="confirmPassword">确认密码</label>
+          <input
+            id="confirmPassword"
+            title="비밀번호를 다시 입력하세요."
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="请确认密码"
             required
           />
         </div>
-        {errorMessage && <p className="errorMessage">{errorMessage}</p>}
-        <button type="submit">Register</button>
+        <button type="submit" className="registerButton">
+          Register
+        </button>
       </form>
     </div>
   );
