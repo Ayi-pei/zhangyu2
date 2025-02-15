@@ -10,7 +10,7 @@ const SupportDialog = lazy(() => import('./components/SupportDialog'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const BindingForm = lazy(() => import('./components/BindingForm'));
 const RechargeForm = lazy(() => import('./components/RechargeForm')); // 修改变量名，避免命名冲突
-
+const History = lazy(() => import('./pages/History'));
 function App() {
   // 绑卡相关的状态
   const [bindingCardNumber, setBindingCardNumber] = useState('');
@@ -40,7 +40,7 @@ function App() {
 
           {/* 绑卡页面，正确传递 props */}
           <Route
-  path="/binding"
+  path="/bindingform"
   element={
     <BindingForm
       bindingCardNumber={bindingCardNumber}
@@ -59,7 +59,9 @@ function App() {
           <Route path="/recharge" element={<RechargeForm />} />
 
           {/* 客服支持对话框 */}
-          <Route path="/dialog-support" element={<SupportDialog onClose={handleCloseSupportDialog} />} />
+          <Route path="/supportdialog" element={<SupportDialog onClose={handleCloseSupportDialog} />} />
+
+          <Route path="/history" element={<History />} />
 
           {/* 404 页面 */}
           <Route path="*" element={<NotFound />} />

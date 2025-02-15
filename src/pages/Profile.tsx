@@ -21,7 +21,7 @@ const Profile = () => {
   return (
     <div className="profile-container p-4">
       {/* 返回按钮 */}
-      <button
+      <button  type="button"
         onClick={() => navigate('/')} // ✅ 修正路径
         className="back-btn text-white bg-blue-500 p-2 rounded-md"
         aria-label="返回首页"
@@ -50,22 +50,22 @@ const Profile = () => {
 
       {/* 功能部分 */}
       <div className="functions mt-6 space-y-4">
-        <button onClick={() => navigate('/history')} className="function-btn w-full p-3 text-white bg-green-500 rounded-md">
+        <button  type="button" onClick={() => navigate('/history')} className="function-btn w-full p-3 text-white bg-green-500 rounded-md">
           历史记录
         </button>
-        <button onClick={() => navigate('/bindingform')} className="function-btn w-full p-3 text-white bg-yellow-500 rounded-md">
+        <button type="button" onClick={() => navigate('/bindingform')} className="function-btn w-full p-3 text-white bg-yellow-500 rounded-md">
           绑卡
         </button>
-        <button onClick={() => navigate('/rechargeform')} className="function-btn w-full p-3 text-white bg-blue-500 rounded-md">
+        <button  type="button" onClick={() => navigate('/rechargeform')} className="function-btn w-full p-3 text-white bg-blue-500 rounded-md">
           积分补充
         </button>
-        <button
+        <button type="button"
           className="function-btn w-full p-3 text-white bg-purple-500 rounded-md"
           onClick={() => setShowSupportDialog(true)}
         >
           客服支持
         </button>
-        <button onClick={() => navigate('/')} className="function-btn w-full p-3 text-white bg-red-500 rounded-md">
+        <button type="button" onClick={() => navigate('/')} className="function-btn w-full p-3 text-white bg-red-500 rounded-md">
           结束退出
         </button>
       </div>
@@ -75,7 +75,7 @@ const Profile = () => {
         <div className="support-dialog fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg w-1/3">
             <h3 className="text-xl font-bold">联系客服</h3>
-            <button
+            <button  type="button"
               className="mt-4 p-2 bg-red-500 text-white rounded-md"
               onClick={() => setShowSupportDialog(false)}
             >
