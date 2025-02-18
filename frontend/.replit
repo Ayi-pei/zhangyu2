@@ -1,7 +1,7 @@
 modules = ["nodejs-20"]
 
 [[ports]]
-localPort = 5173
+localPort = 3000
 port = 5173
 
 [[run]]
