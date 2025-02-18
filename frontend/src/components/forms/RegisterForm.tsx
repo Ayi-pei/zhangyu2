@@ -1,51 +1,43 @@
-// src/components/RegisterForm.tsx
-import React, { useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import '../../styles/RegisterForm.css';
 
-const RegisterForm: React.FC = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [email, setEmail] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+// 定义传递给 RegisterForm 的 props 类型
+interface RegisterFormProps {
+  username: string;
+  setUsername: Dispatch<SetStateAction<string>>;
+  password: string;
+  setPassword: Dispatch<SetStateAction<string>>;
+  confirmPassword: string;
+  setConfirmPassword: Dispatch<SetStateAction<string>>;
+  email: string;
+  setEmail: Dispatch<SetStateAction<string>>;
+  onSubmit: (e: React.FormEvent) => void;
+}
 
-  // 表单提交处理
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // 表单验证
-    if (password !== confirmPassword) {
-      setErrorMessage('Password and Confirm Password must match!');
-      return;
-    }
-    if (!username || !password || !email) {
-      setErrorMessage('Please fill out all fields.');
-      return;
-    }
-
-    // 模拟注册 API 调用，成功后处理
-    console.log(`Registering user: ${username}, Email: ${email}`);
-    setErrorMessage('');
-    // 清空表单
-    setUsername('');
-    setPassword('');
-    setConfirmPassword('');
-    setEmail('');
-  };
-
+const RegisterForm: React.FC<RegisterFormProps> = ({
+  username,
+  setUsername,
+  password,
+  setPassword,
+  confirmPassword,
+  setConfirmPassword,
+  email,
+  setEmail,
+  onSubmit,
+}) => {
   return (
     <div className="registerContainer">
       <h2 className="registerTitle">注册账号</h2>
-      {errorMessage && <div className="errorMessage">{errorMessage}</div>}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={onSubmit}>
         <div className="formGroup">
           <label htmlFor="username">用户名</label>
           <input
-            title="사용자 이름은 최소 6자 이상이어야 합니다"
+            id="username"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="请输入用户名"
+            required
           />
         </div>
         <div className="formGroup">
@@ -56,6 +48,7 @@ const RegisterForm: React.FC = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="请输入邮箱"
+            required
           />
         </div>
         <div className="formGroup">
@@ -66,13 +59,13 @@ const RegisterForm: React.FC = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="请输入密码"
+            required
           />
         </div>
         <div className="formGroup">
           <label htmlFor="confirmPassword">确认密码</label>
           <input
             id="confirmPassword"
-            title="비밀번호를 다시 입력하세요."
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
@@ -81,7 +74,7 @@ const RegisterForm: React.FC = () => {
           />
         </div>
         <button type="submit" className="registerButton">
-          Register
+          注册
         </button>
       </form>
     </div>

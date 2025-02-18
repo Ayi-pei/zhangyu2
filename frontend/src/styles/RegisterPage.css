@@ -1,0 +1,38 @@
+.register-page {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .error {
+    color: red;
+    margin-bottom: 10px;
+  }
+
+  form div {
+    margin-bottom: 10px;
+  }
+
+  form label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  form input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+  }
+
+  form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+
+  form button:hover {
+    background-color: #45a049;
+  }

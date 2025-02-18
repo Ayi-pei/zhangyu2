@@ -1,3 +1,5 @@
+import React from 'react';
+
 interface BindingFormProps {
   bindingCardNumber: string;
   setBindingCardNumber: React.Dispatch<React.SetStateAction<string>>;

@@ -1,21 +1,18 @@
 import { Navigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
 
-interface PrivateRouteProps {
-  children: React.ReactNode;
-  requiredRole: 'admin' | 'user';
-}
+const PrivateRoute = ({ children, admin = false }: { children: JSX.Element; admin?: boolean }) => {
+  const { isAuthenticated, isAdmin } = useAuth();
 
-const PrivateRoute = ({ children, requiredRole }: PrivateRouteProps) => {
-  // 从 localStorage 获取用户角色（这里你可以改为从 Context 或 Redux 读取）
-  const userRole = localStorage.getItem('role'); // 例如 "admin" 或 "user"
-
-  // 如果角色匹配，则允许访问
-  if (userRole === requiredRole) {
-    return <>{children}</>;
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
   }
 
-  // 如果角色不匹配，重定向到登录页面
-  return <Navigate to="/login" replace />;
+  if (admin && !isAdmin) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
 };
 
 export default PrivateRoute;
