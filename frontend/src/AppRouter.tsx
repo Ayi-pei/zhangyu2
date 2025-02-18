@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { lazy, useState } from 'react';
+import { lazy } from 'react';
 import PrivateRoute from './components/PrivateRoute';
 
 const Home = lazy(() => import('./pages/Home'));
@@ -23,15 +23,9 @@ const ContentReview = lazy(() => import('./pages/admin/ContentReview'));
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
 
 const AppRouter = () => {
-  // 定义 BindingForm 的 state 和 handleSubmit
-  const [bindingCardNumber, setBindingCardNumber] = useState('');
-  const [bindingBank, setBindingBank] = useState('');
-  const [bindingExchangeCode, setBindingExchangeCode] = useState('');
-  const [bindingCardHolder, setBindingCardHolder] = useState('');
-
+  // 此处 handleSubmit 仅处理提交逻辑
   const handleSubmit = () => {
-    // 提交绑定信息
-    console.log('绑定信息:', { bindingCardNumber, bindingBank, bindingExchangeCode, bindingCardHolder });
+    console.log('绑定信息提交');
   };
 
   return (
@@ -41,24 +35,9 @@ const AppRouter = () => {
       <Route path="/videos" element={<Videos />} />
       <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
       <Route path="/history" element={<PrivateRoute><History /></PrivateRoute>} />
-      
+
       {/* 表单页面 */}
-      <Route
-        path="/bindingform"
-        element={
-          <BindingForm
-            bindingCardNumber={bindingCardNumber}
-            setBindingCardNumber={setBindingCardNumber}
-            bindingBank={bindingBank}
-            setBindingBank={setBindingBank}
-            bindingExchangeCode={bindingExchangeCode}
-            setBindingExchangeCode={setBindingExchangeCode}
-            bindingCardHolder={bindingCardHolder}
-            setBindingCardHolder={setBindingCardHolder}
-            onSubmit={handleSubmit}
-          />
-        }
-      />
+      <Route path="/bindingform" element={<BindingForm onSubmit={handleSubmit} />} />
       <Route path="/rechargeform" element={<RechargeForm />} />
       <Route path="/exchangeform" element={<ExchangeForm />} />
 
