@@ -1,6 +1,6 @@
 // src/components/RegisterForm.tsx
 import React, { useState } from 'react';
-import './RegisterForm.css';
+import '../../styles/RegisterForm.css';
 
 const RegisterForm: React.FC = () => {
   const [username, setUsername] = useState('');

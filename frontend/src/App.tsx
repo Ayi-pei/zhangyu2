@@ -5,13 +5,13 @@ const Home = lazy(() => import('./pages/Home'));
 const GamePlay = lazy(() => import('./pages/GamePlay'));
 const Videos = lazy(() => import('./pages/Videos'));
 const Profile = lazy(() => import('./pages/Profile'));
-const SupportDialog = lazy(() => import('./components/SupportDialog'));
+const SupportDialog = lazy(() => import('./components/ui/SupportDialog'));
 const NotFound = lazy(() => import('./pages/NotFound'));
-const BindingForm = lazy(() => import('./components/BindingForm'));
-const RechargeForm = lazy(() => import('./components/RechargeForm'));
+const BindingForm = lazy(() => import('./components/forms/BindingForm'));
+const RechargeForm = lazy(() => import('./components/forms/RechargeForm'));
 const History = lazy(() => import('./pages/History'));
-const ExchangeForm = lazy(() => import('./components/ExchangeForm'));
-const RegisterForm = lazy(() => import('./components/RegisterForm')); // 仅使用 lazy 加载
+const ExchangeForm = lazy(() => import('./components/forms/ExchangeForm'));
+const RegisterForm = lazy(() => import('./components/forms/RegisterForm')); // 仅使用 lazy 加载
 
 function App() {
   const [bindingCardNumber, setBindingCardNumber] = useState('');

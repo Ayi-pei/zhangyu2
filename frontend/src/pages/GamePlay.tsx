@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, X, RefreshCw } from 'lucide-react';
-import BottomNav from '../components/BottomNav';
+import BottomNav from '../components/ui/BottomNav';
 import { getPlayerBalance, setPlayerBalance, getJumpHistory, setJumpHistory } from '../utils/storage';
 import { exportDataToBackend } from '../utils/api';
 
@@ -99,7 +99,6 @@ function JumpDialog({ isOpen, onClose, onConfirm, direction }: JumpDialogProps) 
 }
 
 function GamePlay() {
-  // 从 URL 中获取参数，若 mode 为空，则使用默认值 '3min'
   const { mode: paramMode, gameId } = useParams<{ mode: string; gameId: string }>();
   const mode = paramMode ?? '3min';
   const navigate = useNavigate();
@@ -109,21 +108,23 @@ function GamePlay() {
   console.log("从 Home 页面传递的模式名称：", state?.modeName);
   console.log("游戏时长：", state?.duration);
 
-  // 根据 URL 参数或传递的 state 决定游戏模式名称和时长
+  // 根据 URL 参数或传递的 state 决定游戏模式名称和时长（以分钟为单位）
   const modeName = state?.modeName || mode;
   const getDuration = (mode: string): number => {
     switch (mode) {
       case '3min':
-        return 180;
+        return 3;
       case '5min':
-        return 300;
+        return 5;
       case '12min':
-        return 720;
+        return 12;
       default:
-        return 180;
+        return 3;
     }
   };
-  const duration = state?.duration || getDuration(mode);
+
+  // 将分钟转换为秒
+  const duration = (state?.duration || getDuration(mode)) * 60;
   const roundStartKey = `roundStart_${mode}`;
 
   const [timeLeft, setTimeLeft] = useState<number>(() => {
@@ -145,11 +146,12 @@ function GamePlay() {
   const [jumps, setJumps] = useState<Jump[]>(() => getJumpHistory());
   const [isSpinning, setIsSpinning] = useState(false);
 
-  const startNewRound = () => {
+  // 用 useCallback 缓存 startNewRound 函数，依赖 duration 和 roundStartKey
+  const startNewRound = useCallback(() => {
     const currentSeoulTime = getSeoulTime();
     localStorage.setItem(roundStartKey, currentSeoulTime.toString());
     setTimeLeft(duration);
-  };
+  }, [duration, roundStartKey]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -169,7 +171,7 @@ function GamePlay() {
       }
     }, 1000);
     return () => clearInterval(timer);
-  }, [mode, duration, roundStartKey]);
+  }, [mode, duration, roundStartKey, startNewRound]);
 
   useEffect(() => {
     if (timeLeft === 0) {
@@ -214,7 +216,7 @@ function GamePlay() {
       localStorage.setItem('currentBets', '{}');
       startNewRound();
     }
-  }, [timeLeft, duration]);
+  }, [timeLeft, duration, startNewRound]);
 
   const getDirectionLabel = (direction: string) => {
     switch (direction) {

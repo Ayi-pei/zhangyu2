@@ -1,7 +1,7 @@
 import { FaTimes } from 'react-icons/fa';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './SupportDialog.css'; // 自定义样式
+import '../../styles/SupportDialog.css'; // 自定义样式
 
 interface SupportDialogProps {
   onClose: () => void;

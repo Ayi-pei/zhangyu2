@@ -1,31 +1,24 @@
-import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import LoginForm from '../components/LoginForm';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const hasCheckedLogin = useRef(false); // 避免 useEffect 重复执行
 
-  useEffect(() => {
-    console.log('Checking login status...');
-    if (hasCheckedLogin.current) return;
-    hasCheckedLogin.current = true;
+  const handleLogin = (role: 'admin' | 'user') => {
+    localStorage.setItem('role', role);
 
-    const storedUsername = localStorage.getItem('username');
-    if (storedUsername) {
-      console.log('User already logged in, redirecting...');
+    // 根据角色跳转不同页面
+    if (role === 'admin') {
+      navigate('/admin/dashboard', { replace: true });
+    } else {
       navigate('/home', { replace: true });
     }
-  }, [navigate]);
-
-  const onLoginSuccess = () => {
-    localStorage.setItem('username', 'user');
-    navigate('/home', { replace: true });
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <LoginForm onLoginSuccess={onLoginSuccess} />
+    <div className="min-h-screen flex flex-col items-center justify-center">
+      <h1 className="text-xl font-bold mb-4">登录</h1>
+      <button onClick={() => handleLogin('user')} className="bg-blue-500 text-white px-4 py-2 mb-2">普通用户登录</button>
+      <button onClick={() => handleLogin('admin')} className="bg-red-500 text-white px-4 py-2">管理员登录</button>
     </div>
   );
 };

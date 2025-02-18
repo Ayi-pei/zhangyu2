@@ -1,31 +1,27 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["DOM","ESNext"],
+    "lib": ["DOM", "ESNext"],
     "module": "ESNext",
     "skipLibCheck": true,
     "allowJs": true,
     "checkJs": false,
-    "forceConsistentCasingInFileNames": true, // ✅ 启用一致的文件名大小写检查
-    "jsx": "react-jsx",     // 如果使用 React，确保启用 JSX
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react-jsx",
     "allowSyntheticDefaultImports": true,
     "typeRoots": ["node_modules/@types", "node_modules"],
-    "types": ["json-schema"],
+    "types": [],  // 移除 "json-schema" 或不写 types 字段
     "esModuleInterop": true,
-
-
-    /* Bundler mode */
     "moduleResolution": "node",
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
-    "moduleDetection": "force", //  使用 node 模式
+    "moduleDetection": "force",
     "noEmit": true,
-
-    /* Linting */
-    "strict": true, // ✅ 启用严格模式，减少类型错误
+    "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": "./src",
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

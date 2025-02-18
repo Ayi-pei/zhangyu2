@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // 使用React Router的钩子
 import './Profile.css'; // 引入样式文件
-import BottomNav from '../components/BottomNav';
+import BottomNav from '../components/ui/BottomNav';
 
 const Profile = () => {
   const [showSupportDialog, setShowSupportDialog] = useState(false);

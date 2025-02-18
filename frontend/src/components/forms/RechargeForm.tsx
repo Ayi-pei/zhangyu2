@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './RechargeForm.css';  // 引入外部CSS
+import '../../styles/RechargeForm.css';  // 引入外部CSS
 
 const RechargeForm = () => {
   // 将状态统一为字符串

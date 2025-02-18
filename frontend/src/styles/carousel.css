@@ -1,21 +1,51 @@
-/* src/styles/carousel.css */
+/* Carousel container */
 .carousel-container {
-    overflow: hidden;
-    width: 100%;
-    height: 16rem; /* h-64 */
-    position: relative;
-  }
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
 
-  .carousel-track {
-    display: flex;
-    transition: transform 1s ease-in-out;
-    transform: translateX(var(--translate-x, 0));
-  }
+/* Carousel track */
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  height: 100%;
+  transform: translateX(var(--translate-x, 0));
+}
 
-  .carousel-slide {
-    flex: 0 0 100%;
-    width: 100%;
-    height: 16rem; /* h-64 */
-    object-fit: cover;
-    border-radius: 0.75rem; /* rounded-xl */
+/* Individual carousel slides */
+.carousel-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .carousel-container {
+    height: 300px;
   }
+}
+
+@media (min-width: 1024px) {
+  .carousel-container {
+    height: 400px;
+  }
+}
+
+/* Animation for slide transitions */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}

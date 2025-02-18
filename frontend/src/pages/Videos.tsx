@@ -1,6 +1,6 @@
 import { useState } from 'react'; // 确保这里导入了 useState
 import { Play } from 'lucide-react';
-import BottomNav from '../components/BottomNav';
+import BottomNav from '../components/ui/BottomNav';
 
 // Vimeo 视频 ID 数组
 const videoIds = [
