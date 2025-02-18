@@ -1,53 +1,63 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import RegisterForm from '../components/forms/RegisterForm'; // 引入注册表单组件
+import RegisterForm from '../components/forms/RegisterForm';
 
 const RegisterPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const navigate = useNavigate(); // 用于导航
+  const navigate = useNavigate();
 
-  // 提交注册表单
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage('');
 
-    // 表单验证
-    if (password !== confirmPassword) {
-      setErrorMessage('密码和确认密码不匹配');
+    if (!username || !email || !password || !confirmPassword) {
+      setErrorMessage('请填写所有字段');
       return;
     }
-    if (!username || !password || !email) {
-      setErrorMessage('请填写所有字段');
+    if (password !== confirmPassword) {
+      setErrorMessage('密码和确认密码不匹配');
       return;
     }
 
     // 强密码验证：至少包含一个大写字母、一个数字和一个特殊字符
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordRegex.test(password)) {
-      setErrorMessage('密码必须至少包含一个大写字母、一个数字和一个特殊字符');
+      setErrorMessage('密码必须包含至少一个大写字母、一个数字和一个特殊字符');
       return;
     }
 
-    // 模拟注册 API 调用，成功后处理
-    console.log(`注册用户：${username}, 邮箱：${email}`);
-    setErrorMessage('');
-    // 清空表单
-    setUsername('');
-    setPassword('');
-    setConfirmPassword('');
-    setEmail('');
+    setIsSubmitting(true); // 开始提交，防止重复操作
+    try {
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password }),
+      });
 
-    // 跳转到成功注册页面或其他页面
-    navigate('/profile');
+      if (response.ok) {
+        alert('注册成功，请登录！');
+        navigate('/login'); // 跳转到登录页面
+      } else {
+        const errorData = await response.json();
+        setErrorMessage(errorData.message || '注册失败，请重试');
+      }
+    } catch (error) {
+      console.error('注册错误:', error);
+      setErrorMessage('服务器错误，请稍后再试');
+    } finally {
+      setIsSubmitting(false); // 结束提交
+    }
   };
 
   return (
-    <div className="register-page">
-      <h1>注册</h1>
+    <div className="min-h-screen flex flex-col items-center justify-center">
+      <h1 className="text-xl font-bold mb-4">注册</h1>
       <RegisterForm
         username={username}
         setUsername={setUsername}
@@ -57,9 +67,10 @@ const RegisterPage = () => {
         setConfirmPassword={setConfirmPassword}
         email={email}
         setEmail={setEmail}
+        errorMessage={errorMessage}
         onSubmit={handleSubmit}
+        isSubmitting={isSubmitting}
       />
-      {errorMessage && <div className="errorMessage">{errorMessage}</div>}
     </div>
   );
 };

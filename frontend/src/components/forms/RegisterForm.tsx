@@ -1,7 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import '../../styles/RegisterForm.css';
 
-// 定义传递给 RegisterForm 的 props 类型
 interface RegisterFormProps {
   username: string;
   setUsername: Dispatch<SetStateAction<string>>;
@@ -11,7 +10,9 @@ interface RegisterFormProps {
   setConfirmPassword: Dispatch<SetStateAction<string>>;
   email: string;
   setEmail: Dispatch<SetStateAction<string>>;
+  errorMessage: string;
   onSubmit: (e: React.FormEvent) => void;
+  isSubmitting?: boolean; // 添加加载状态
 }
 
 const RegisterForm: React.FC<RegisterFormProps> = ({
@@ -23,7 +24,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
   setConfirmPassword,
   email,
   setEmail,
+  errorMessage,
   onSubmit,
+  isSubmitting = false, // 默认状态为 false
 }) => {
   return (
     <div className="registerContainer">
@@ -38,8 +41,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
             onChange={(e) => setUsername(e.target.value)}
             placeholder="请输入用户名"
             required
+            autoComplete="off"
           />
         </div>
+
         <div className="formGroup">
           <label htmlFor="email">邮箱</label>
           <input
@@ -49,8 +54,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
             onChange={(e) => setEmail(e.target.value)}
             placeholder="请输入邮箱"
             required
+            autoComplete="off"
           />
         </div>
+
         <div className="formGroup">
           <label htmlFor="password">密码</label>
           <input
@@ -60,8 +67,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
             onChange={(e) => setPassword(e.target.value)}
             placeholder="请输入密码"
             required
+            autoComplete="new-password"
+            minLength={8}
           />
         </div>
+
         <div className="formGroup">
           <label htmlFor="confirmPassword">确认密码</label>
           <input
@@ -71,10 +81,19 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="请确认密码"
             required
+            autoComplete="new-password"
+            minLength={8}
           />
         </div>
-        <button type="submit" className="registerButton">
-          注册
+
+        {errorMessage && <div className="errorMessage">{errorMessage}</div>}
+
+        <button
+          type="submit"
+          className="registerButton"
+          disabled={isSubmitting} // 防止重复提交
+        >
+          {isSubmitting ? '注册中...' : '注册'}
         </button>
       </form>
     </div>
