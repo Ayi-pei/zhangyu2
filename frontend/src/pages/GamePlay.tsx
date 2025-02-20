@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, X, RefreshCw } from 'lucide-react';
-import BottomNav from '../components/ui/BottomNav';
+import BottomNav from '../components/BottomNav';
 import { getPlayerBalance, setPlayerBalance, getJumpHistory, setJumpHistory } from '../utils/storage';
 import { exportDataToBackend } from '../utils/api';
 
@@ -122,8 +122,8 @@ function GamePlay() {
         return 3;
     }
   };
-
-  // 将分钟转换为秒
+  
+  // 将分钟转换为毫秒
   const duration = (state?.duration || getDuration(mode)) * 60;
   const roundStartKey = `roundStart_${mode}`;
 
@@ -146,12 +146,11 @@ function GamePlay() {
   const [jumps, setJumps] = useState<Jump[]>(() => getJumpHistory());
   const [isSpinning, setIsSpinning] = useState(false);
 
-  // 用 useCallback 缓存 startNewRound 函数，依赖 duration 和 roundStartKey
-  const startNewRound = useCallback(() => {
+  const startNewRound = () => {
     const currentSeoulTime = getSeoulTime();
     localStorage.setItem(roundStartKey, currentSeoulTime.toString());
     setTimeLeft(duration);
-  }, [duration, roundStartKey]);
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -171,7 +170,7 @@ function GamePlay() {
       }
     }, 1000);
     return () => clearInterval(timer);
-  }, [mode, duration, roundStartKey, startNewRound]);
+  }, [mode, duration, roundStartKey]);
 
   useEffect(() => {
     if (timeLeft === 0) {
@@ -216,7 +215,7 @@ function GamePlay() {
       localStorage.setItem('currentBets', '{}');
       startNewRound();
     }
-  }, [timeLeft, duration, startNewRound]);
+  }, [timeLeft, duration]);
 
   const getDirectionLabel = (direction: string) => {
     switch (direction) {

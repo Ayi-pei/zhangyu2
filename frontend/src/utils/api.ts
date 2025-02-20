@@ -1,49 +1,42 @@
-export interface ApiResponse<T> {
-  success: boolean;
-  message: string;
-  data: T;
-}
+// src/utils/api.ts
 
-const API_BASE_URL = 'http://localhost:5173/api';
+const API_BASE_URL = 'http://localhost:3000/api';
 
 /**
- * 发送 POST 请求到 API
+ * 将数据导出到后台
+ * @param data 需要传输的数据
  */
-export const post = async <T>(endpoint: string, data: T): Promise<ApiResponse<T>> => {
+export const exportDataToBackend = async (data: any): Promise<any> => {
   try {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
-
-    // 检查 HTTP 状态码
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    return (await response.json()) as ApiResponse<T>;
+    // For development, we'll just log the data and return a success response
+    console.log('Game data:', data);
+    return {
+      success: true,
+      message: 'Data processed successfully',
+      data
+    };
   } catch (error) {
-    console.error('API Error:', error);
+    console.error('Error processing data:', error);
     throw error;
   }
 };
 
-/**
- * 直接导出一个 API 方法，供外部调用
- */
-export const exportDataToBackend = async <T>(data: T): Promise<ApiResponse<T>> => {
-  console.log('Game data:', data);
-  return {
-    success: true,
-    message: 'Data processed successfully',
-    data
-  };
-};
-
+// Export a default API client for other services
 export default {
   baseURL: API_BASE_URL,
-  post
+  post: async (endpoint: string, data: any) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      return await response.json();
+    } catch (error) {
+      console.error('API Error:', error);
+      throw error;
+    }
+  }
 };

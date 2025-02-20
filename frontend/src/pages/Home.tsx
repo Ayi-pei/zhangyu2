@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Laptop as Octopus, Clock3, Clock5, Clock12 } from 'lucide-react';
-import BottomNav from '../components/ui/BottomNav';
+import BottomNav from '../components/BottomNav';
 import '../styles/carousel.css';
 
 interface GameMode {

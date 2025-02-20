@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // 使用React Router的钩子
-import './Profile.css'; // 引入样式文件
-import BottomNav from '../components/ui/BottomNav';
+import { useNavigate } from 'react-router-dom';
+import { History, CreditCard, Wallet2, MessageCircle, LogOut, Star, ArrowLeft } from 'lucide-react';
+import './Profile.css';
+import BottomNav from '../components/BottomNav';
 
 const Profile = () => {
   const [showSupportDialog, setShowSupportDialog] = useState(false);
@@ -15,65 +16,96 @@ const Profile = () => {
     vipLevel: 1,
   };
 
-  // 使用 React Router 的 useNavigate 钩子来处理返回
   const navigate = useNavigate();
 
   return (
-    <div className="profile-container p-4">
-      {/* 返回按钮 */}
-      <button  type="button"
-        onClick={() => navigate('/')} // ✅ 修正路径
-        className="back-btn text-white bg-blue-500 p-2 rounded-md"
+    <div className="profile-container">
+      <button
+        type="button"
+        onClick={() => navigate('/')}
+        className="back-btn"
         aria-label="返回首页"
       >
+        <ArrowLeft className="w-4 h-4 inline-block mr-2" />
         返回首页
       </button>
 
-      {/* 用户信息部分 */}
-      <div className="user-info flex items-center gap-4 mt-6">
-        <img
-          src={playerStats.avatar}
-          alt="Avatar"
-          className="w-16 h-16 rounded-full border-2 border-white"
-        />
-        <div className="text-white">
-          <h2 className="text-xl font-bold">{playerStats.nickname}</h2>
-          <div className="flex gap-4 mt-2 text-sm">
-            <span>当前余额: {playerStats.balance}</span>
-            <span>玩家信誉: {playerStats.reputation}</span>
-            <span className="text-yellow-500">
-              VIP等级 {playerStats.vipLevel} <span className="text-yellow-400">★</span>
-            </span>
+      <div className="user-info">
+        <div className="flex items-center gap-4">
+          <img
+            src={playerStats.avatar}
+            alt="Avatar"
+            className="w-20 h-20 rounded-full"
+          />
+          <div>
+            <h2 className="text-2xl font-bold mb-2">{playerStats.nickname}</h2>
+            <div className="vip-badge">
+              <Star className="w-4 h-4" />
+              <span>VIP {playerStats.vipLevel}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div className="stats-container">
+          <div className="stat-item">
+            현재 잔액: {playerStats.balance}
+          </div>
+          <div className="stat-item">
+            신용점수: {playerStats.reputation}
           </div>
         </div>
       </div>
 
-      {/* 功能部分 */}
-      <div className="functions mt-6 space-y-4">
-        <button  type="button" onClick={() => navigate('/history')} className="function-btn w-full p-3 text-white bg-green-500 rounded-md">
+      <div className="functions">
+        <button
+          type="button"
+          onClick={() => navigate('/history')}
+          className="function-btn history"
+        >
+          <History className="w-5 h-5" />
           历史记录
         </button>
-        <button type="button" onClick={() => navigate('/bindingform')} className="function-btn w-full p-3 text-white bg-yellow-500 rounded-md">
-          绑卡
+        <button
+          type="button"
+          onClick={() => navigate('/bindingform')}
+          className="function-btn binding"
+        >
+          <CreditCard className="w-5 h-5" />
+          绑定银行卡
         </button>
-        <button  type="button" onClick={() => navigate('/rechargeform')} className="function-btn w-full p-3 text-white bg-blue-500 rounded-md">
-          积分补充
+        <button
+          type="button"
+          onClick={() => navigate('/rechargeform')}
+          className="function-btn recharge"
+        >
+          <Wallet2 className="w-5 h-5" />
+          积分充值
         </button>
-        <button type="button" onClick={() => navigate('/supportdialog')} className="function-btn w-full p-3 text-white bg-purple-500 rounded-md">
-          客服支持
+        <button
+          type="button"
+          onClick={() => navigate('/supportdialog')}
+          className="function-btn support"
+        >
+          <MessageCircle className="w-5 h-5" />
+          联系客服
         </button>
-        <button type="button" onClick={() => navigate('/')} className="function-btn w-full p-3 text-white bg-red-500 rounded-md">
-          结束退出
+        <button
+          type="button"
+          onClick={() => navigate('/')}
+          className="function-btn exit col-span-full"
+        >
+          <LogOut className="w-5 h-5" />
+          退出登录
         </button>
       </div>
 
-      {/* 客服支持弹窗 */}
       {showSupportDialog && (
-        <div className="support-dialog fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg w-1/3">
-            <h3 className="text-xl font-bold">联系客服</h3>
-            <button  type="button"
-              className="mt-4 p-2 bg-red-500 text-white rounded-md"
+        <div className={`support-dialog ${showSupportDialog ? 'show' : ''}`}>
+          <div className="support-dialog-content">
+            <h3 className="text-xl font-bold mb-4">联系客服</h3>
+            <button
+              type="button"
+              className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
               onClick={() => setShowSupportDialog(false)}
             >
               关闭
@@ -82,7 +114,6 @@ const Profile = () => {
         </div>
       )}
 
-      {/* 底部导航栏 */}
       <BottomNav className="fixed bottom-0 left-0 w-full" />
     </div>
   );

@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Home, Film, Gamepad2, User } from 'lucide-react';
-import "../../styles/BottomNav.css";
+import './BottomNav.css';
 
 interface BottomNavProps {
   className?: string;

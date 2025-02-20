@@ -1,50 +1,53 @@
-import { Dispatch, SetStateAction } from 'react';
-import '../../styles/RegisterForm.css';
+// src/components/RegisterForm.tsx
+import React, { useState } from 'react';
+import './RegisterForm.css';
 
-interface RegisterFormProps {
-  username: string;
-  setUsername: Dispatch<SetStateAction<string>>;
-  password: string;
-  setPassword: Dispatch<SetStateAction<string>>;
-  confirmPassword: string;
-  setConfirmPassword: Dispatch<SetStateAction<string>>;
-  email: string;
-  setEmail: Dispatch<SetStateAction<string>>;
-  errorMessage: string;
-  onSubmit: (e: React.FormEvent) => void;
-  isSubmitting?: boolean; // 添加加载状态
-}
+const RegisterForm: React.FC = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-const RegisterForm: React.FC<RegisterFormProps> = ({
-  username,
-  setUsername,
-  password,
-  setPassword,
-  confirmPassword,
-  setConfirmPassword,
-  email,
-  setEmail,
-  errorMessage,
-  onSubmit,
-  isSubmitting = false, // 默认状态为 false
-}) => {
+  // 表单提交处理
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // 表单验证
+    if (password !== confirmPassword) {
+      setErrorMessage('Password and Confirm Password must match!');
+      return;
+    }
+    if (!username || !password || !email) {
+      setErrorMessage('Please fill out all fields.');
+      return;
+    }
+
+    // 模拟注册 API 调用，成功后处理
+    console.log(`Registering user: ${username}, Email: ${email}`);
+    setErrorMessage('');
+    // 清空表单
+    setUsername('');
+    setPassword('');
+    setConfirmPassword('');
+    setEmail('');
+  };
+
   return (
     <div className="registerContainer">
       <h2 className="registerTitle">注册账号</h2>
-      <form onSubmit={onSubmit}>
+      {errorMessage && <div className="errorMessage">{errorMessage}</div>}
+      <form onSubmit={handleSubmit}>
         <div className="formGroup">
           <label htmlFor="username">用户名</label>
           <input
-            id="username"
+            title="사용자 이름은 최소 6자 이상이어야 합니다"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="请输入用户名"
-            required
-            autoComplete="off"
           />
         </div>
-
         <div className="formGroup">
           <label htmlFor="email">邮箱</label>
           <input
@@ -53,11 +56,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="请输入邮箱"
-            required
-            autoComplete="off"
           />
         </div>
-
         <div className="formGroup">
           <label htmlFor="password">密码</label>
           <input
@@ -66,34 +66,22 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="请输入密码"
-            required
-            autoComplete="new-password"
-            minLength={8}
           />
         </div>
-
         <div className="formGroup">
           <label htmlFor="confirmPassword">确认密码</label>
           <input
             id="confirmPassword"
+            title="비밀번호를 다시 입력하세요."
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="请确认密码"
             required
-            autoComplete="new-password"
-            minLength={8}
           />
         </div>
-
-        {errorMessage && <div className="errorMessage">{errorMessage}</div>}
-
-        <button
-          type="submit"
-          className="registerButton"
-          disabled={isSubmitting} // 防止重复提交
-        >
-          {isSubmitting ? '注册中...' : '注册'}
+        <button type="submit" className="registerButton">
+          Register
         </button>
       </form>
     </div>
