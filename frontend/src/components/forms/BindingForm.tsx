@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AlertCircle, ArrowLeft } from 'lucide-react';
-import './BindingForm.css';
+import '../../styles/BindingForm.css';
 
 interface BindingFormProps {
   bindingCardNumber: string;

@@ -1,5 +1,5 @@
 import { FormEvent, useState } from 'react';
-import './LoginForm.css';
+import '../../styles/LoginForm.css';
 
 
 const LoginForm = ({ onLoginSuccess }: { onLoginSuccess: () => void }) => {

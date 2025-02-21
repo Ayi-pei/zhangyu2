@@ -1,6 +1,6 @@
 // src/components/ExchangeForm.tsx
 import { useState } from 'react';
-import './ExchangeForm.css';  // 引入外部 CSS 文件
+import '../../styles/ExchangeForm.css'; // 引入外部 CSS 文件
 
 const ExchangeForm = () => {
   const [exchangeCode, setExchangeCode] = useState('');

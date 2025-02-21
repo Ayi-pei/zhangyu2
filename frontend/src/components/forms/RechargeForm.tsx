@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { AlertCircle, CheckCircle } from 'lucide-react';
-import './RechargeForm.css';
+import '../../styles/RechargeForm.css';
 
 const QUICK_AMOUNTS = [100, 200, 500, 1000, 2000, 5000];
 
