@@ -7,6 +7,28 @@
   align-items: center;
 }
 
+.back-button {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  color: white;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.back-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
 .recharge-card {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
@@ -15,8 +37,9 @@
   padding: 2rem;
   width: 100%;
   max-width: 500px;
-  margin-top: 2rem;
+  margin-top: 4rem;
   color: white;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .recharge-title {
@@ -128,6 +151,12 @@
   
   .recharge-card {
     padding: 1.5rem;
+    margin-top: 5rem;
+  }
+  
+  .back-button {
+    top: 1rem;
+    left: 1rem;
   }
   
   .quick-amounts {

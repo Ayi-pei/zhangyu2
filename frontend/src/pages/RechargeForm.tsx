@@ -37,7 +37,7 @@ const RechargeForm = () => {
     <div className="recharge-container">
       <div className="recharge-card">
         <h2 className="recharge-title">积分充值</h2>
-        
+
         <form onSubmit={handleSubmit}>
           <div className="amount-input-group">
             <label htmlFor="rechargeAmount">充值金额</label>

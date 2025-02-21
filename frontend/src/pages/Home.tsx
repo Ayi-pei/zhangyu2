@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Laptop as Octopus, Clock3, Clock5, Clock12 } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
 import '../styles/carousel.css';
 
@@ -12,9 +12,9 @@ interface GameMode {
 }
 
 const gameModes: GameMode[] = [
-  { name: "정식-3분", duration: 3, icon: <Clock3 className="w-6 h-6" />, path: "3min" },
-  { name: "고급-5분", duration: 5, icon: <Clock5 className="w-6 h-6" />, path: "5min" },
-  { name: "일반-12분", duration: 12, icon: <Clock12 className="w-6 h-6" />, path: "12min" },
+  { name: "정식-3분", duration: 3, icon: <Heart className="w-6 h-6 text-red-500" />, path: "3min" },
+  { name: "고급-5분", duration: 5, icon: <Heart className="w-6 h-6 text-red-500" />, path: "5min" },
+  { name: "일반-12분", duration: 12, icon: <Heart className="w-6 h-6 text-red-500" />, path: "12min" },
 ];
 
 const carouselImages = [
@@ -64,10 +64,10 @@ function Home() {
       <div className="container mx-auto px-4 py-8">
         {/* 标题 */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white flex items-center justify-center gap-2">
-            <Octopus className="w-10 h-10" />
-            만남
-          </h1>
+         <h1 className="text-4xl font-bold text-white flex items-center justify-center gap-2">
+           <Heart className="w-10 h-10 text-red-500" />
+           만남
+         </h1>
         </div>
 
         {/* 游戏模式选择 */}
@@ -75,7 +75,7 @@ function Home() {
           {gameModes.map((mode) => (
             <button type="button"
               key={mode.name}
-              onClick={() => handleModeSelect(mode)}
+             onClick={() => handleModeSelect(mode)}
               className="p-6 rounded-lg bg-blue-500 text-white text-center transition-transform duration-300 ease-in-out hover:bg-blue-600 hover:scale-105 hover:shadow-lg"
             >
               <div className="flex flex-col items-center gap-2">

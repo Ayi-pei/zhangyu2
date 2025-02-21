@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { X, Send, MessageSquare } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { X, Send, MessageSquare, ArrowLeft } from 'lucide-react';
 import './SupportDialog.css';
 
 interface SupportDialogProps {
@@ -12,6 +13,7 @@ interface Message {
 }
 
 const SupportDialog: React.FC<SupportDialogProps> = ({ onClose }) => {
+  const navigate = useNavigate();
   const [messages, setMessages] = useState<Message[]>([]);
   const [messageText, setMessageText] = useState('');
 
@@ -38,6 +40,15 @@ const SupportDialog: React.FC<SupportDialogProps> = ({ onClose }) => {
 
   return (
     <div className="support-dialog-container">
+      <button
+        type="button"
+        onClick={() => navigate('/profile')}
+        className="back-button"
+      >
+        <ArrowLeft className="w-5 h-5" />
+        <span>返回个人中心</span>
+      </button>
+
       <div className="support-dialog-card">
         <div className="dialog-header">
           <h3 className="dialog-title">联系客服</h3>
@@ -80,7 +91,7 @@ const SupportDialog: React.FC<SupportDialogProps> = ({ onClose }) => {
           />
           <div className="action-buttons">
             <button
-              type="button"
+              type="button" aria-label="-send"
               onClick={handleSendMessage}
               className="action-button send-button"
               disabled={!messageText.trim()}

@@ -1,22 +1,43 @@
 .support-dialog-container {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(8px);
+  min-height: 100vh;
+  background: linear-gradient(135deg, #8c52ff 0%, #ff914d 100%);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.back-button {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  color: white;
+  font-weight: 500;
+  transition: all 0.3s ease;
   z-index: 50;
 }
 
+.back-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
 .support-dialog-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 24px;
   width: 90%;
   max-width: 500px;
-  max-height: 90vh;
+  margin-top: 4rem;
   overflow: hidden;
   color: white;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
@@ -109,6 +130,11 @@
   color: rgba(255, 255, 255, 0.5);
 }
 
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .action-button {
   padding: 0.75rem 1.5rem;
   border-radius: 12px;
@@ -116,6 +142,9 @@
   transition: all 0.3s ease;
   border: none;
   color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .send-button {
@@ -147,9 +176,18 @@
 }
 
 @media (max-width: 640px) {
+  .support-dialog-container {
+    padding: 1rem;
+  }
+  
   .support-dialog-card {
     width: 95%;
-    max-height: 95vh;
+    margin-top: 5rem;
+  }
+  
+  .back-button {
+    top: 1rem;
+    left: 1rem;
   }
   
   .input-container {
