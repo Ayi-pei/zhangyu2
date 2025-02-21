@@ -1,6 +1,6 @@
 // src/utils/api.ts
 
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = 'http://localhost:3000/api'; // 可以用于配置
 
 /**
  * API 响应泛型接口
@@ -14,25 +14,20 @@ interface ApiResponse<T> {
 /**
  * 默认的 API 客户端
  */
-export default {
-  baseURL: API_BASE_URL,
+export const exportDataToBackend = {
+  baseURL: API_BASE_URL,  // 使用 API_BASE_URL 作为基础 URL
 
-  // 使用泛型传递具体类型
-  post: async <T, U>(endpoint: string, data: U): Promise<ApiResponse<T>> => {  // U 用来定义传递的 data 类型
-    try {
-      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+  post: async <T, U>(endpoint: string, data: U): Promise<ApiResponse<T>> => {
+    // 发送请求的代码
+    const response = await fetch(`${exportDataToBackend.baseURL}${endpoint}`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: { 'Content-Type': 'application/json' }
+    });
 
-      const result = await response.json();
-      return result;
-    } catch (error) {
-      console.error('API Error:', error);
-      throw error;
-    }
-  },
+    // 处理请求返回结果
+    const result: ApiResponse<T> = await response.json();
+
+    return result;  // 返回符合 ApiResponse<T> 类型的结果
+  }
 };

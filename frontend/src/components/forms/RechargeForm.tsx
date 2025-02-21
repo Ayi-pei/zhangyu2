@@ -1,12 +1,10 @@
 import { useState } from 'react';
-import { AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { AlertCircle, CheckCircle } from 'lucide-react';
 import './RechargeForm.css';
 
 const QUICK_AMOUNTS = [100, 200, 500, 1000, 2000, 5000];
 
 const RechargeForm = () => {
-  const navigate = useNavigate();
   const [amount, setAmount] = useState('');
   const [selectedQuickAmount, setSelectedQuickAmount] = useState<number | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
@@ -37,18 +35,9 @@ const RechargeForm = () => {
 
   return (
     <div className="recharge-container">
-      <button
-        type="button"
-        onClick={() => navigate('/profile')}
-        className="back-button"
-      >
-        <ArrowLeft className="w-5 h-5" />
-        <span>返回个人中心</span>
-      </button>
-
       <div className="recharge-card">
         <h2 className="recharge-title">积分充值</h2>
-        
+
         <form onSubmit={handleSubmit}>
           <div className="amount-input-group">
             <label htmlFor="rechargeAmount">充值金额</label>
