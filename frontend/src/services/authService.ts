@@ -1,5 +1,5 @@
 // src/services/authService.ts
-import api from '../utils/api';
+import api from "../utils/api";  // 默认导入
 
 // 登录请求数据类型
 interface LoginRequest {

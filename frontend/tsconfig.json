@@ -10,7 +10,7 @@
     "jsx": "react-jsx",     // 如果使用 React，确保启用 JSX
     "allowSyntheticDefaultImports": true,
     "typeRoots": ["node_modules/@types", "node_modules"],
-    "types": [],
+    "types": ["node"],
     "esModuleInterop": true,
 
 
@@ -29,4 +29,4 @@
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]
-}
+ }

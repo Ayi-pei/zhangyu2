@@ -14,20 +14,17 @@ interface ApiResponse<T> {
 /**
  * 默认的 API 客户端
  */
-export const exportDataToBackend = {
-  baseURL: API_BASE_URL,  // 使用 API_BASE_URL 作为基础 URL
-
+const api = {
+  baseURL: API_BASE_URL,
   post: async <T, U>(endpoint: string, data: U): Promise<ApiResponse<T>> => {
-    // 发送请求的代码
-    const response = await fetch(`${exportDataToBackend.baseURL}${endpoint}`, {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       method: 'POST',
       body: JSON.stringify(data),
       headers: { 'Content-Type': 'application/json' }
     });
-
-    // 处理请求返回结果
-    const result: ApiResponse<T> = await response.json();
-
-    return result;  // 返回符合 ApiResponse<T> 类型的结果
+    const result = await response.json();
+    return result;
   }
 };
+
+export default api;  // 确保使用默认导出
