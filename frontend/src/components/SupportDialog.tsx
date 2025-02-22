@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { X, Send, MessageSquare, ArrowLeft } from 'lucide-react';
-import './SupportDialog.css';
+import '../styles/SupportDialog.css';
 
 interface SupportDialogProps {
   onClose: () => void;
