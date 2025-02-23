@@ -9,8 +9,7 @@
     "forceConsistentCasingInFileNames": true, // ✅ 启用一致的文件名大小写检查
     "jsx": "react-jsx",     // 如果使用 React，确保启用 JSX
     "allowSyntheticDefaultImports": true,
-    "typeRoots": ["node_modules/@types", "node_modules"],
-    "types": ["json-schema"],
+    "typeRoots": ["node_modules/@types"],
     "esModuleInterop": true,
 
 
