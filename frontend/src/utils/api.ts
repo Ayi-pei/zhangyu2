@@ -1,30 +1,42 @@
 // src/utils/api.ts
 
-const API_BASE_URL = 'http://localhost:3000/api'; // 可以用于配置
+const API_BASE_URL = 'http://localhost:3000/api';
 
 /**
- * API 响应泛型接口
+ * 将数据导出到后台
+ * @param data 需要传输的数据
  */
-interface ApiResponse<T> {
-  data: T;
-  status: string;
-  message: string;
-}
-
-/**
- * 默认的 API 客户端
- */
-const api = {
-  baseURL: API_BASE_URL,
-  post: async <T, U>(endpoint: string, data: U): Promise<ApiResponse<T>> => {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: { 'Content-Type': 'application/json' }
-    });
-    const result = await response.json();
-    return result;
+export const exportDataToBackend = async (data: any): Promise<any> => {
+  try {
+    // For development, we'll just log the data and return a success response
+    console.log('Game data:', data);
+    return {
+      success: true,
+      message: 'Data processed successfully',
+      data
+    };
+  } catch (error) {
+    console.error('Error processing data:', error);
+    throw error;
   }
 };
 
-export default api;  // 确保使用默认导出
+// Export a default API client for other services
+export default {
+  baseURL: API_BASE_URL,
+  post: async (endpoint: string, data: any) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      return await response.json();
+    } catch (error) {
+      console.error('API Error:', error);
+      throw error;
+    }
+  }
+};

@@ -1,5 +1,3 @@
-// src/App.tsx
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { lazy, Suspense, useState } from 'react';
 
@@ -8,13 +6,12 @@ const GamePlay = lazy(() => import('./pages/GamePlay'));
 const Videos = lazy(() => import('./pages/Videos'));
 const Profile = lazy(() => import('./pages/Profile'));
 const SupportDialog = lazy(() => import('./components/SupportDialog'));
-const NotFound = lazy(() => import('./components/NotFound'));
-const BindingForm = lazy(() => import('./components/forms/BindingForm'));
-const RechargeForm = lazy(() => import('./components/forms/RechargeForm'));
+const NotFound = lazy(() => import('./pages/NotFound'));
+const BindingForm = lazy(() => import('./components/BindingForm'));
+const RechargeForm = lazy(() => import('./components/RechargeForm'));
 const History = lazy(() => import('./pages/History'));
-const ExchangeForm = lazy(() => import('./components/forms/ExchangeForm'));
-const RegisterForm = lazy(() => import('./components/forms/RegisterForm'));
-const LoginPage = lazy(() => import('./pages/LoginPage')); // 引入 LoginPage
+const ExchangeForm = lazy(() => import('./components/ExchangeForm'));
+const RegisterForm = lazy(() => import('./components/RegisterForm')); // 仅使用 lazy 加载
 
 function App() {
   const [bindingCardNumber, setBindingCardNumber] = useState('');
@@ -56,7 +53,6 @@ function App() {
           <Route path="/history" element={<History />} />
           <Route path="/exchangeform" element={<ExchangeForm />} />
           <Route path="/register" element={<RegisterForm />} />
-          <Route path="/login" element={<LoginPage />} /> {/* 添加登录路由 */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

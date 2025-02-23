@@ -1,0 +1,24 @@
+/* ExchangeForm.css */
+.errorMessage {
+  background-color: #fdecea;  /* 柔和的红色背景 */
+  color: #c0392b;             /* 深红色文字 */
+  border: 1px solid #e74c3c;   /* 鲜艳的红色边框 */
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin: 10px 0;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s ease;
+}
+
+.successMessage {
+  background-color: #e9f7ef;  /* 柔和的绿色背景 */
+  color: #27ae60;             /* 绿色文字 */
+  border: 1px solid #2ecc71;   /* 鲜艳的绿色边框 */
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin: 10px 0;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s ease;
+}

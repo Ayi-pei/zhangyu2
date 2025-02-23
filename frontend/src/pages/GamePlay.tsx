@@ -2,17 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, X, RefreshCw } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
-import { getPlayerBalance, setPlayerBalance, setJumpHistory } from '../utils/storage';
-import exportDataToBackend from '../utils/api';
-import getJumpHistory from './History';
+import { getPlayerBalance, setPlayerBalance, getJumpHistory, setJumpHistory } from '../utils/storage';
+import { exportDataToBackend } from '../utils/api';
 
 interface Jump {
   direction: string;
-  id: number;
   steps: number;
   results: string[];
-  // 为解决类型不匹配，可选添加 result 属性
-  result?: string;
   timestamp: number;
   pointsEarned: number;
   status: 'pending' | 'completed';
@@ -25,7 +21,7 @@ interface JumpDialogProps {
   direction: string;
 }
 
-// 获取当前首尔时间（毫秒）
+// 辅助函数：获取当前首尔时间（毫秒）
 const getSeoulTime = () =>
   new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" })).getTime();
 
@@ -126,8 +122,8 @@ function GamePlay() {
         return 3;
     }
   };
-
-  // 将分钟转换为秒
+  
+  // 将分钟转换为毫秒
   const duration = (state?.duration || getDuration(mode)) * 60;
   const roundStartKey = `roundStart_${mode}`;
 
@@ -259,7 +255,6 @@ function GamePlay() {
     setPlayerBalance(newBalance);
 
     const newJump: Jump = {
-      id: Date.now(),
       direction: currentDirection,
       steps,
       results: [],
@@ -297,7 +292,7 @@ function GamePlay() {
         <div className="container mx-auto flex justify-between items-center">
           <button
             type="button"
-            onClick={() => navigate('/') }
+            onClick={() => navigate('/')}
             className="flex items-center gap-2 hover:bg-blue-700 p-2 rounded-lg transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
@@ -313,7 +308,7 @@ function GamePlay() {
         <div className="grid grid-cols-2 gap-6 max-w-md mx-auto">
           {[
             { direction: '귀엽', label: '귀엽', gradient: 'from-pink-500 to-rose-500' },
-            { direction: '순수하', label: '귀엽', gradient: 'from-purple-500 to-indigo-500' },
+            { direction: '순수하', label: '순수하', gradient: 'from-purple-500 to-indigo-500' },
             { direction: '직설적이', label: '직설적이', gradient: 'from-blue-500 to-cyan-500' },
             { direction: '섹시하', label: '섹시하', gradient: 'from-orange-500 to-amber-500' }
           ].map(({ direction, label, gradient }) => (
@@ -349,9 +344,13 @@ function GamePlay() {
                   <div className="mt-1 text-sm text-gray-600">
                     <span>베팅: {jump.steps}</span>
                     <span className="mx-2">|</span>
-                    <span>{jump.status === 'pending' ? '결과 대기 중' : jump.results.join(' + ')}</span>
+                    <span>
+                      결과: {jump.status === 'pending' ? '결과 대기 중' : jump.results.join(' + ')}
+                    </span>
                     <span className="mx-2">|</span>
-                    <span>{jump.status === 'completed' ? `${jump.pointsEarned >= 0 ? '+' : ''}${jump.pointsEarned}` : ''}</span>
+                    <span>
+                      {jump.status === 'completed' ? `${jump.pointsEarned >= 0 ? '+' : ''}${jump.pointsEarned}` : ''}
+                    </span>
                     <span className="mx-2">|</span>
                     <span>{formatTimestamp(jump.timestamp)}</span>
                   </div>

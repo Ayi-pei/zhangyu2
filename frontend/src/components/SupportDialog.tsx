@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { X, Send, MessageSquare, ArrowLeft } from 'lucide-react';
-import '../styles/SupportDialog.css';
+import './SupportDialog.css';
 
 interface SupportDialogProps {
   onClose: () => void;
@@ -91,7 +91,7 @@ const SupportDialog: React.FC<SupportDialogProps> = ({ onClose }) => {
           />
           <div className="action-buttons">
             <button
-              type="button" aria-label="-send"
+              type="button"
               onClick={handleSendMessage}
               className="action-button send-button"
               disabled={!messageText.trim()}
