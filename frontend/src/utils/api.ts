@@ -1,6 +1,6 @@
 // src/utils/api.ts
 
-const API_BASE_URL = 'http://localhost:3000/api'; // 可以用于配置
+const API_BASE_URL = 'http://localhost:5173/api'; // 可以用于配置
 
 /**
  * API 响应泛型接口
