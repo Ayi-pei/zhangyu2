@@ -1,26 +1,27 @@
 export type LoginParams = {
-    username:string;
-    password:string;
-    captchaId:string;
-    verifyCode:string;
+    username: string;
+    password: string;
+    captchaId: string;
+    verifyCode: string;
 }
 
 export type LoginResult = {
-    token:string;
+    token: string;
+    userId: string; // 添加 userId 属性
 }
 
 export type CaptchaParams = {
-    width?:number;
-    height?:number;
+    width?: number;
+    height?: number;
 }
 
 export type CaptchaResult = {
-    img:string;
-    id:string;
+    img: string;
+    id: string;
 }
 
-export type userInfoResult = {
-    userName:string,
-    roles:number[]
-    [anykey:string|number]:any
+export type UserInfo = {
+    userName: string;
+    roles: number[];
+    [anykey: string | number]: any;
 }

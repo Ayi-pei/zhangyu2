@@ -34,49 +34,73 @@ const BindingForm: React.FC<BindingFormProps> = ({
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
+  // 组件加载时请求后端获取用户已绑定的银行卡信息
   useEffect(() => {
-    // 检查是否已绑定银行卡
-    const boundCard = localStorage.getItem('boundCard');
-    if (boundCard) {
-      const cardData = JSON.parse(boundCard);
-      setBindingCardNumber(cardData.cardNumber);
-      setBindingBank(cardData.bank);
-      setBindingCardHolder(cardData.cardHolder);
-      setIsCardBound(true);
-    }
+    fetch('/api/card-info')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.cardNumber) {
+          setBindingCardNumber(data.cardNumber);
+          setBindingBank(data.bank);
+          setBindingCardHolder(data.cardHolder);
+          // 可选：如果后端返回兑换码，也可以设置
+          setIsCardBound(true);
+        }
+      })
+      .catch(err => {
+        console.error('获取绑卡信息失败:', err);
+        // 可以根据需求设置错误提示，这里选择不提示
+      });
   }, [setBindingCardNumber, setBindingBank, setBindingCardHolder]);
 
+  // 绑定银行卡表单提交处理
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+    setSuccess('');
+
     if (!bindingCardNumber || !bindingBank || !bindingExchangeCode || !bindingCardHolder) {
       setError('请填写完整的银行卡信息');
       return;
     }
     
-    // 保存绑卡信息
-    const cardData = {
-      cardNumber: bindingCardNumber,
-      bank: bindingBank,
-      cardHolder: bindingCardHolder,
-      exchangeCode: bindingExchangeCode
-    };
-    localStorage.setItem('boundCard', JSON.stringify(cardData));
-    setIsCardBound(true);
-    setSuccess('银行卡绑定成功！');
-    onSubmit();
+    fetch('/api/bind-card', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        cardNumber: bindingCardNumber,
+        bank: bindingBank,
+        cardHolder: bindingCardHolder,
+        exchangeCode: bindingExchangeCode
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setIsCardBound(true);
+          setSuccess('银行卡绑定成功！');
+          onSubmit();
+        } else {
+          setError(data.message || '绑定失败，请重试');
+        }
+      })
+      .catch(err => {
+        console.error('绑定错误:', err);
+        setError('绑定过程中出现错误，请稍后重试');
+      });
   };
 
+  // 积分兑换表单提交处理
   const handleExchange = (e: React.FormEvent) => {
     e.preventDefault();
-    const boundCard = localStorage.getItem('boundCard');
-    if (!boundCard) {
-      setError('请先绑定银行卡');
-      return;
-    }
+    setError('');
+    setSuccess('');
 
-    const cardData = JSON.parse(boundCard);
-    if (verificationCode !== cardData.exchangeCode) {
-      setError('兑换码验证失败');
+    // 若没有绑定银行卡，则直接提示错误
+    if (!isCardBound) {
+      setError('请先绑定银行卡');
       return;
     }
 
@@ -86,22 +110,32 @@ const BindingForm: React.FC<BindingFormProps> = ({
       return;
     }
 
-    // 获取当前余额
-    const currentBalance = parseInt(localStorage.getItem('playerBalance') || '0');
-    if (points > currentBalance) {
-      setError('积分余额不足');
-      return;
-    }
-
-    // 计算兑换金额（10积分 = 1韩元）
-    const krwAmount = points / 10;
-    
-    // 更新余额
-    localStorage.setItem('playerBalance', (currentBalance - points).toString());
-    
-    setSuccess(`成功兑换 ${points} 积分为 ${krwAmount} 韩元`);
-    setExchangeAmount('');
-    setVerificationCode('');
+    fetch('/api/exchange', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        exchangeAmount: points,
+        verificationCode: verificationCode
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          // 假设后端返回了兑换后的积分数和对应韩元金额
+          setSuccess(`成功兑换 ${data.points} 积分为 ${data.krwAmount} 韩元`);
+          // 可选：若后端返回更新后的用户余额，可在此更新状态
+          setExchangeAmount('');
+          setVerificationCode('');
+        } else {
+          setError(data.message || '兑换失败，请重试');
+        }
+      })
+      .catch(err => {
+        console.error('兑换错误:', err);
+        setError('兑换过程中出现错误，请稍后重试');
+      });
   };
 
   return (
@@ -140,6 +174,7 @@ const BindingForm: React.FC<BindingFormProps> = ({
               value={bindingCardNumber}
               onChange={(e) => setBindingCardNumber(e.target.value)}
               placeholder="请输入银行卡号"
+              disabled={isCardBound}  // 已绑定后不可修改
             />
           </div>
 
@@ -151,6 +186,7 @@ const BindingForm: React.FC<BindingFormProps> = ({
               value={bindingBank}
               onChange={(e) => setBindingBank(e.target.value)}
               placeholder="请输入开户银行"
+              disabled={isCardBound}
             />
           </div>
 
@@ -162,9 +198,11 @@ const BindingForm: React.FC<BindingFormProps> = ({
               value={bindingCardHolder}
               onChange={(e) => setBindingCardHolder(e.target.value)}
               placeholder="请输入持卡人姓名"
+              disabled={isCardBound}
             />
           </div>
 
+          {/* 未绑定状态下才允许设置兑换码 */}
           {!isCardBound && (
             <div className="form-group">
               <label htmlFor="exchangeCode">兑换码</label>
