@@ -24,33 +24,33 @@ app.get('/', (req, res) => {
 // 示例 API 接口：绑定银行卡接口
 app.post('/api/bind-card', (req, res) => {
   const { cardNumber, bank, cardHolder, exchangeCode } = req.body;
-  if (!cardNumber || !bank || !cardHolder || !exchangeCode) {
-    return res.status(400).json({ success: false, message: '请填写完整的银行卡信息' });
-  }
-  // 模拟保存绑卡信息
-  const cardData = { cardNumber, bank, cardHolder, exchangeCode };
-  return res.json({ success: true, message: '银行卡绑定成功', cardData });
+  // 处理绑定银行卡逻辑
+  res.json({ message: '银行卡绑定成功' });
 });
 
-// 示例 API 接口：获取绑定信息接口
-app.get('/api/card-info', (req, res) => {
-  // 这里假设存在绑卡信息，否则返回 404
-  // 实际项目中可以从数据库中查询用户信息
-  const cardData = null;  // 请替换成实际数据逻辑
-  if (cardData) {
-    return res.json(cardData);
-  } else {
-    return res.status(404).json({ success: false, message: '未绑定银行卡' });
-  }
+// 示例 API 接口：获取用户信息
+app.get('/api/users/:userId', (req, res) => {
+  const { userId } = req.params;
+  // 模拟用户数据
+  const user = {
+    id: userId,
+    username: 'player1',
+    email: 'player1@example.com',
+    balance: 1000,
+    createdAt: new Date()
+  };
+  res.json(user);
 });
 
-// 示例 API 接口：积分兑换接口
-app.post('/api/exchange', (req, res) => {
-  // 模拟处理兑换请求
-  return res.json({ success: true, message: '兑换成功' });
+// 示例 API 接口：更新用户余额
+app.post('/api/users/:userId/balance', (req, res) => {
+  const { userId } = req.params;
+  const { amount } = req.body;
+  // 处理更新用户余额逻辑
+  res.json({ message: `用户 ${userId} 的余额已更新` });
 });
 
 // 启动服务器
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  console.log(`服务器正在运行在 http://localhost:${port}`);
 });

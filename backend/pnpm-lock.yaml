@@ -1,0 +1,30 @@
+lockfileVersion: 5.3
+
+specifiers:
+  vue: ^3.2.0
+  vue-router: ^4.0.0
+  element-plus: ^1.0.2
+
+dependencies:
+  vue: 3.2.26
+  vue-router: 4.0.12
+  element-plus: 1.0.2-beta.70
+
+packages:
+  /vue/3.2.26:
+    resolution: {integrity: sha512-...}
+    dependencies:
+      '@vue/shared': 3.2.26
+    dev: false
+
+  /vue-router/4.0.12:
+    resolution: {integrity: sha512-...}
+    dependencies:
+      '@vue/devtools-api': 6.0.0-beta.15
+    dev: false
+
+  /element-plus/1.0.2-beta.70:
+    resolution: {integrity: sha512-...}
+    dependencies:
+      '@popperjs/core': 2.9.2
+    dev: false

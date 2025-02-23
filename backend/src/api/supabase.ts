@@ -1,9 +1,9 @@
 // src/api/supabase.ts
 import { createClient } from '@supabase/supabase-js'
 
-// 你的 Supabase 配置
-const supabaseUrl = 'https://hzjsqvphkuwjskzisrhr.supabase.co'
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh6anNxdnBoa3V3anNremlzcmhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAzMDk4MzYsImV4cCI6MjA1NTg4NTgzNn0.Ke1TYtXt1-R6l_ocuVriScOCuGCV7f5SjpRj5gWWGFA'
+const supabaseUrl = process.env.SUPABASE_URL || 'https://your-supabase-url.supabase.co'
+const supabaseKey = process.env.SUPABASE_KEY || 'your-supabase-key'
+
 export const supabase = createClient(supabaseUrl, supabaseKey)
 
 // 查询玩家账户信息
@@ -28,9 +28,6 @@ export async function getUserBets(userId: string) {
 
 // 获取所有游戏投注统计
 export async function getBetStats() {
-  const { data, error } = await supabase
-    .from('bets')
-    .select('game_type, sum(amount) as total_bet')
-    .group('game_type');
+  const { data, error } = await supabase.rpc('get_bet_stats');
   return error ? [] : data;
 }

@@ -1,5 +1,5 @@
 // src/api/user.ts
-import { supabase } from '@/api/supabase'
+import { supabase } from './supabase'
 
 // 通过用户 ID 查询账户信息
 export async function getUserById(userId: number) {
@@ -17,5 +17,11 @@ export async function updateUserAccount(userId: number, cardNumber: string, acco
     .from('users')
     .update({ card_number: cardNumber, account_info: accountInfo, updated_at: new Date() })
     .eq('id', userId);
+  return error ? null : data;
+}
+
+// 兑换积分功能
+export async function exchangePoints(userId: number, points: number) {
+  const { data, error } = await supabase.rpc('increment_points', { user_id: userId, points_to_add: points });
   return error ? null : data;
 }
