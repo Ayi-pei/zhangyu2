@@ -6,9 +6,16 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import {createSvgIconsPlugin} from 'vite-plugin-svg-icons'
-export default defineConfig({
 
-    resolve: {
+
+export default defineConfig({
+    plugins: [vue()],
+    server: {
+      proxy: {
+        '/api': 'http://localhost:5000', // Set the backend API URL
+      },
+    },
+        resolve: {
         alias: {
             '@': path.resolve(__dirname, './src')
         }
@@ -16,7 +23,7 @@ export default defineConfig({
     server:{
         host:true,
         port:5173,
-        strictPort:false
+        strictPort:
     },
     css:{
       preprocessorOptions:{

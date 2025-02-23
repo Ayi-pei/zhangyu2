@@ -1,56 +1,117 @@
-// server.js
 const express = require('express');
+const { supabase } = require('./src/api/supabase');
 const app = express();
 const port = process.env.PORT || 5000;
 
 // 解析 JSON 请求体
 app.use(express.json());
 
-// 添加根路由，返回默认页面
-app.get('/', (req, res) => {
-  res.send(`
-    <html>
-      <head>
-        <title>API 服务</title>
-      </head>
-      <body>
-        <h1>欢迎使用 API 服务</h1>
-        <p>请通过前端调用 API 接口。</p>
-      </body>
-    </html>
-  `);
+// 获取用户列表
+app.get('/api/users', async (req, res) => {
+  const { data, error } = await supabase
+    .from('users')
+    .select('*')
+    .limit(30)  // 可以根据需要分页
+    .offset(0);
+
+  if (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+  return res.json(data);
 });
 
-// 示例 API 接口：绑定银行卡接口
-app.post('/api/bind-card', (req, res) => {
-  const { cardNumber, bank, cardHolder, exchangeCode } = req.body;
-  // 处理绑定银行卡逻辑
-  res.json({ message: '银行卡绑定成功' });
+// 获取单个用户信息
+app.get('/api/users/:id', async (req, res) => {
+  const userId = req.params.id;
+  const { data, error } = await supabase
+    .from('users')
+    .select('*')
+    .eq('id', userId)
+    .single();
+
+  if (error) {
+    return res.status(404).json({ success: false, message: '用户未找到' });
+  }
+  return res.json(data);
 });
 
-// 示例 API 接口：获取用户信息
-app.get('/api/users/:userId', (req, res) => {
-  const { userId } = req.params;
-  // 模拟用户数据
-  const user = {
-    id: userId,
-    username: 'player1',
-    email: 'player1@example.com',
-    balance: 1000,
-    createdAt: new Date()
-  };
-  res.json(user);
+// 更新用户信息
+app.put('/api/users/:id', async (req, res) => {
+  const userId = req.params.id;
+  const { card_number, account_info } = req.body;
+
+  const { data, error } = await supabase
+    .from('users')
+    .update({ card_number, account_info })
+    .eq('id', userId);
+
+  if (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+  return res.json({ success: true, message: '用户信息更新成功', data });
 });
 
-// 示例 API 接口：更新用户余额
-app.post('/api/users/:userId/balance', (req, res) => {
-  const { userId } = req.params;
-  const { amount } = req.body;
-  // 处理更新用户余额逻辑
-  res.json({ message: `用户 ${userId} 的余额已更新` });
+// 获取开奖结果
+app.get('/api/results', async (req, res) => {
+  const { data, error } = await supabase
+    .from('results')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+  return res.json(data);
+});
+
+// 修改开奖结果
+app.put('/api/results/:id', async (req, res) => {
+  const resultId = req.params.id;
+  const { winning_numbers, draw_date } = req.body;
+
+  const { data, error } = await supabase
+    .from('results')
+    .update({ winning_numbers, draw_date })
+    .eq('id', resultId);
+
+  if (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+  return res.json({ success: true, message: '开奖结果更新成功', data });
+});
+
+// 获取投注记录
+app.get('/api/bets', async (req, res) => {
+  const { userId } = req.query;
+
+  const { data, error } = await supabase
+    .from('bets')
+    .select('*')
+    .eq('user_id', userId);
+
+  if (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+  return res.json(data);
+});
+
+// 修改投注记录
+app.put('/api/bets/:id', async (req, res) => {
+  const betId = req.params.id;
+  const { amount, status } = req.body;
+
+  const { data, error } = await supabase
+    .from('bets')
+    .update({ amount, status })
+    .eq('id', betId);
+
+  if (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+  return res.json({ success: true, message: '投注记录更新成功', data });
 });
 
 // 启动服务器
 app.listen(port, () => {
-  console.log(`服务器正在运行在 http://localhost:${port}`);
+  console.log(`Server running on port ${port}`);
 });

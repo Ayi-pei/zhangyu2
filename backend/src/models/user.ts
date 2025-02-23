@@ -1,65 +1,47 @@
-// src/routes/user.ts
-import express from 'express';
-import { getUserById, updateUserAccount, exchangePoints } from '../api/user';
-import { bindCard, getCardInfo } from '../api/bank';
+import { supabase } from '../api/supabase';
 
-const router = express.Router();
+export interface User {
+  id: string;
+  username: string;
+  email: string;
+  card_number?: string;
+  account_info?: string;
+  // add additional properties if needed
+}
 
-// 获取用户信息
-router.get('/user/:userId', async (req, res) => {
-  const userId = parseInt(req.params.userId);
-  const user = await getUserById(userId);
-  if (!user) {
-    return res.status(404).json({ success: false, message: '用户未找到' });
-  }
-  res.json(user);
-});
+// 获取所有用户
+export async function getUsers(): Promise<User[] | null> {
+  const { data, error } = await supabase.from('users').select('*');
+  return error ? null : data;
+}
 
-// 更新用户账户信息
-router.post('/user/:userId/update', async (req, res) => {
-  const { cardNumber, accountInfo } = req.body;
-  const userId = parseInt(req.params.userId);
+// 获取单个用户
+export async function getUserById(userId: number): Promise<User | null> {
+  const { data, error } = await supabase
+    .from('users')
+    .select('*')
+    .eq('id', userId)
+    .single();
+  return error ? null : data;
+}
 
-  const updatedUser = await updateUserAccount(userId, cardNumber, accountInfo);
-  if (!updatedUser) {
-    return res.status(500).json({ success: false, message: '更新失败' });
-  }
-  res.json({ success: true, message: '更新成功', data: updatedUser });
-});
+// 创建用户
+export async function createUser(userData: any): Promise<User | null> {
+  const { data, error } = await supabase.from('users').insert([userData]);
+  return error ? null : data;
+}
 
-// 积分兑换
-router.post('/user/:userId/exchange', async (req, res) => {
-  const { points } = req.body;
-  const userId = parseInt(req.params.userId);
+// 更新用户
+export async function updateUser(userId: number, userData: any): Promise<User | null> {
+  const { data, error } = await supabase
+    .from('users')
+    .update(userData)
+    .eq('id', userId);
+  return error ? null : data;
+}
 
-  const updatedUser = await exchangePoints(userId, points);
-  if (!updatedUser) {
-    return res.status(500).json({ success: false, message: '兑换失败' });
-  }
-  res.json({ success: true, message: '兑换成功', data: updatedUser });
-});
-
-// 绑定银行卡
-router.post('/user/:userId/bind-card', async (req, res) => {
-  const { cardNumber, bank, cardHolder } = req.body;
-  const userId = parseInt(req.params.userId);
-
-  const result = await bindCard(userId, cardNumber, bank, cardHolder);
-  if (!result.success) {
-    return res.status(500).json(result);
-  }
-  res.json(result);
-});
-
-// 获取用户绑定的银行卡信息
-router.get('/user/:userId/card-info', async (req, res) => {
-  const userId = parseInt(req.params.userId);
-
-  const cardInfo = await getCardInfo(userId);
-  if (!cardInfo) {
-    return res.status(404).json({ success: false, message: '未绑定银行卡' });
-  }
-  res.json(cardInfo);
-});
-
-export default router;
+// 删除用户
+export async function deleteUser(userId: number): Promise<boolean> {
+  const { error } = await supabase.from('users').delete().eq('id', userId);
+  return error ? false : true;
+}

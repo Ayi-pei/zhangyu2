@@ -1,27 +1,72 @@
-// src/api/user.ts
-import { supabase } from './supabase'
+import express from 'express';
+import { supabase } from './supabase';
 
-// 通过用户 ID 查询账户信息
-export async function getUserById(userId: number) {
+const app = express();
+
+// 获取用户列表
+app.get('/api/users', async (req, res) => {
+  const { data, error } = await supabase
+    .from('users')
+    .select('*')
+    .range(0, 30); // 可以根据需要分页
+
+  if (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+  return res.json(data);
+});
+
+// 获取单个用户信息
+app.get('/api/users/:id', async (req, res) => {
+  const userId = req.params.id;
   const { data, error } = await supabase
     .from('users')
     .select('*')
     .eq('id', userId)
     .single();
-  return error ? null : data;
-}
 
-// 更新用户账户信息
-export async function updateUserAccount(userId: number, cardNumber: string, accountInfo: string) {
+  if (error) {
+    return res.status(404).json({ success: false, message: '用户未找到' });
+  }
+  return res.json(data);
+});
+
+// 创建用户
+app.post('/api/users', async (req, res) => {
+  const userData = req.body;
+  const { data, error } = await supabase.from('users').insert([userData]);
+
+  if (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+  return res.status(201).json({ success: true, message: '用户创建成功', data });
+});
+
+// 更新用户信息
+app.put('/api/users/:id', async (req, res) => {
+  const userId = req.params.id;
+  const userData = req.body;
+
   const { data, error } = await supabase
     .from('users')
-    .update({ card_number: cardNumber, account_info: accountInfo, updated_at: new Date() })
+    .update(userData)
     .eq('id', userId);
-  return error ? null : data;
-}
 
-// 兑换积分功能
-export async function exchangePoints(userId: number, points: number) {
-  const { data, error } = await supabase.rpc('increment_points', { user_id: userId, points_to_add: points });
-  return error ? null : data;
-}
+  if (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+  return res.json({ success: true, message: '用户信息更新成功', data });
+});
+
+// 删除用户
+app.delete('/api/users/:id', async (req, res) => {
+  const userId = req.params.id;
+  const { error } = await supabase.from('users').delete().eq('id', userId);
+
+  if (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+  return res.json({ success: true, message: '用户删除成功' });
+});
+
+export default app;

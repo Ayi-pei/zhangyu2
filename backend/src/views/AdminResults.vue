@@ -1,59 +1,60 @@
 <template>
-<el-container>
-  <el-header>
-    <h2>未来 10 期开奖结果</h2>
-  </el-header>
-
-  <el-main>
-    <el-table :data="futureResults" border style="width: 100%">
-      <el-table-column prop="game_id" label="游戏ID" width="100" />
-      <el-table-column prop="game_type" label="游戏类型" width="150" />
-      <el-table-column prop="scheduled_time" label="开奖时间" width="180" />
-      <el-table-column prop="predicted_result" label="预计开奖结果" width="150" />
-      <el-table-column label="操作" width="200">
+  <div>
+    <h2>开奖结果管理</h2>
+    <el-table :data="results" style="width: 100%">
+      <el-table-column prop="winning_numbers" label="中奖号码" />
+      <el-table-column prop="draw_date" label="开奖日期" />
+      <el-table-column label="操作">
         <template #default="{ row }">
-          <el-input v-model="row.newResult" placeholder="修改结果" clearable />
-          <el-button type="primary" @click="saveResult(row)">保存</el-button>
+          <el-button type="primary" @click="editResult(row)">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
-  </el-main>
-</el-container>
+
+    <!-- 编辑开奖结果的弹窗 -->
+    <el-dialog v-model="dialogVisible" title="编辑开奖结果">
+      <el-form :model="currentResult">
+        <el-form-item label="中奖号码">
+          <el-input v-model="currentResult.winning_numbers"></el-input>
+        </el-form-item>
+        <el-form-item label="开奖日期">
+          <el-date-picker v-model="currentResult.draw_date" type="date"></el-date-picker>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="updateResult">保存</el-button>
+      </template>
+    </el-dialog>
+  </div>
 </template>
 
-<script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { getFutureResults, updateResult } from '@/api/futureResults'
-import { ElMessage } from 'element-plus'
+<script setup>
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
 
-const futureResults = ref<any[]>([])
+const results = ref([]);
+const dialogVisible = ref(false);
+const currentResult = ref({});
 
-// 获取未来 10 期开奖结果
-async function loadResults() {
-futureResults.value = await getFutureResults()
-futureResults.value.forEach(result => {
-  result.newResult = result.predicted_result // 绑定修改输入框
-})
-}
+// 获取开奖结果
+const fetchResults = async () => {
+  const { data } = await axios.get('/api/results');
+  results.value = data;
+};
 
-// 保存修改的开奖结果
-async function saveResult(row: any) {
-const res = await updateResult(row.game_id, row.newResult)
-if (res) {
-  ElMessage.success(`游戏 ${row.game_id} 结果已更新`)
-  loadResults() // 重新加载数据
-} else {
-  ElMessage.error('更新失败')
-}
-}
+// 编辑开奖结果
+const editResult = (result) => {
+  currentResult.value = { ...result };
+  dialogVisible.value = true;
+};
 
-onMounted(loadResults)
+// 更新开奖结果
+const updateResult = async () => {
+  await axios.put(`/api/results/${currentResult.value.id}`, currentResult.value);
+  dialogVisible.value = false;
+  fetchResults();
+};
+
+onMounted(fetchResults);
 </script>
-
-<style scoped>
-.el-header {
-text-align: center;
-font-size: 20px;
-font-weight: bold;
-}
-</style>
