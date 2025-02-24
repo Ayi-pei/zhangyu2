@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { X, Send, MessageSquare, ArrowLeft } from 'lucide-react';
 import './SupportDialog.css';
@@ -94,6 +94,8 @@ const SupportDialog: React.FC<SupportDialogProps> = ({ onClose }) => {
               type="button"
               onClick={handleSendMessage}
               className="action-button send-button"
+              title="发送消息"
+              aria-label="发送消息"
               disabled={!messageText.trim()}
             >
               <Send className="w-5 h-5" />

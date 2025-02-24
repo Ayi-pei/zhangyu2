@@ -1,14 +1,22 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { History, CreditCard, Wallet2, MessageCircle, LogOut, Star, ArrowLeft } from 'lucide-react';
 import './Profile.css';
 import BottomNav from '../components/BottomNav';
 
+interface PlayerStats {
+  avatar: string;
+  nickname: string;
+  balance: number;
+  reputation: number;
+  vipLevel: number;
+}
+
 const Profile = () => {
   const [showSupportDialog, setShowSupportDialog] = useState(false);
 
   // 用户信息
-  const playerStats = {
+  const playerStats: PlayerStats = {
     avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&auto=format&fit=crop&q=80',
     nickname: '플레이어:001',
     balance: 1000,

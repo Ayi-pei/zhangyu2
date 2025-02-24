@@ -9,6 +9,8 @@ var _vite = require("vite");
 
 var _pluginVue = _interopRequireDefault(require("@vitejs/plugin-vue"));
 
+var _pluginReact = _interopRequireDefault(require("@vitejs/plugin-react"));
+
 var _path = _interopRequireDefault(require("path"));
 
 var _vitePluginMock = require("vite-plugin-mock");
@@ -21,38 +23,39 @@ var _resolvers = require("unplugin-vue-components/resolvers");
 
 var _vitePluginSvgIcons = require("vite-plugin-svg-icons");
 
-var _defineConfig;
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var _default = (0, _vite.defineConfig)((_defineConfig = {
-  plugins: [(0, _pluginVue["default"])()],
+var _default = (0, _vite.defineConfig)(_defineProperty({
+  plugins: [(0, _pluginVue["default"])(), (0, _pluginReact["default"])()],
   server: {
     proxy: {
       '/api': 'http://localhost:5000' // Set the backend API URL
 
-    }
+    },
+    host: true,
+    port: 3000,
+    strictPort: true
   },
   resolve: {
     alias: {
       '@': _path["default"].resolve(__dirname, './src')
     }
-  }
-}, _defineProperty(_defineConfig, "server", {
-  host: true,
-  port: 5173,
-  strictPort: false
-}), _defineProperty(_defineConfig, "css", {
-  preprocessorOptions: {
-    less: {
-      math: true,
-      javascriptEnabled: true,
-      additionalData: "@import \"./src/assets/style/preload/index.less\";"
+  },
+  css: {
+    preprocessorOptions: {
+      less: {
+        math: true,
+        javascriptEnabled: true,
+        additionalData: "@import \"./src/assets/style/preload/index.less\";"
+      }
     }
+  },
+  build: {
+    outDir: 'dist'
   }
-}), _defineProperty(_defineConfig, "plugins", [(0, _pluginVue["default"])(), (0, _vitePluginMock.viteMockServe)({
+}, "plugins", [(0, _pluginVue["default"])(), (0, _pluginReact["default"])(), (0, _vitePluginMock.viteMockServe)({
   watchFiles: false,
   mockPath: './src/mock'
 }), (0, _vite2["default"])({
@@ -64,6 +67,6 @@ var _default = (0, _vite.defineConfig)((_defineConfig = {
   // svg地址
   symbolId: 'icon-[dir]-[name]' // 命名格式
 
-})]), _defineConfig));
+})]));
 
 exports["default"] = _default;

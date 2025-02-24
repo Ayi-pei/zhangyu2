@@ -1,31 +1,29 @@
-import { useEffect, useRef } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoginForm from '../components/LoginForm';
+import { login } from '../services/authService'; // 引入登录函数
 
-const LoginPage = () => {
+const LoginPage: React.FC = () => {
   const navigate = useNavigate();
-  const hasCheckedLogin = useRef(false); // 避免 useEffect 重复执行
 
-  useEffect(() => {
-    console.log('Checking login status...');
-    if (hasCheckedLogin.current) return;
-    hasCheckedLogin.current = true;
+  // 移除了对 supabase.auth.user() 的检查，如有需要请通过 AuthContext 或其他方式检查
 
-    const storedUsername = localStorage.getItem('username');
-    if (storedUsername) {
-      console.log('User already logged in, redirecting...');
-      navigate('/home', { replace: true });
+  const handleLoginSuccess = async (username: string, password: string) => {
+    try {
+      const user = await login(username, password);
+      // 登录成功后跳转
+      if (user) {
+        navigate('/profile', { replace: true });
+      }
+    } catch (error) {
+      console.error(error);
     }
-  }, [navigate]);
-
-  const onLoginSuccess = () => {
-    localStorage.setItem('username', 'user');
-    navigate('/home', { replace: true });
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <LoginForm onLoginSuccess={onLoginSuccess} />
+    <div className="login-page">
+      <h1 className="text-3xl font-bold mb-6 text-center">登录</h1>
+      <LoginForm onLoginSuccess={handleLoginSuccess} />
     </div>
   );
 };

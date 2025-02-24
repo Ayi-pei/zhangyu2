@@ -1,22 +1,31 @@
-import { FormEvent, useState } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
 
-const LoginForm = ({ onLoginSuccess }: { onLoginSuccess: () => void }) => {
+interface LoginFormProps {
+  onLoginSuccess: (username: string, password: string) => Promise<void>;
+}
+
+const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
+  const navigate = useNavigate();
+  const { login } = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
-  const [error, setError] = useState('');
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError('');
 
-    if (username === 'user' && password === 'password') {
-      if (rememberMe) {
-        localStorage.setItem('username', username); // 记住用户名
-      }
-      onLoginSuccess();
-    } else {
-      setError('用户名或密码错误');
+    if (username.length < 6 || username.length > 8 || password.length < 6 || password.length > 8) {
+      console.error('用户名和密码必须是 6-8 位字符');
+      return;
+    }
+
+    try {
+      await login(username, password);
+      await onLoginSuccess(username, password);
+      navigate('/profile'); // 登录成功后跳转
+    } catch {
+      console.error('用户名或密码错误');
     }
   };
 
@@ -32,6 +41,8 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess: () => void }) => {
           onChange={(e) => setUsername(e.target.value)}
           className="w-full p-2 border rounded-md mt-1"
           required
+          minLength={6}
+          maxLength={8}
         />
       </div>
       <div className="mb-4">
@@ -43,17 +54,16 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess: () => void }) => {
           onChange={(e) => setPassword(e.target.value)}
           className="w-full p-2 border rounded-md mt-1"
           required
+          minLength={6}
+          maxLength={8}
         />
       </div>
-      {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
       <div className="flex justify-between items-center mb-4">
         <div>
           <input
             type="checkbox"
             id="rememberMe"
             className="mr-2"
-            checked={rememberMe}
-            onChange={(e) => setRememberMe(e.target.checked)}
           />
           <label htmlFor="rememberMe" className="text-sm">Remember Me</label>
         </div>

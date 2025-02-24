@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, X, RefreshCw } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
@@ -146,11 +146,11 @@ function GamePlay() {
   const [jumps, setJumps] = useState<Jump[]>(() => getJumpHistory());
   const [isSpinning, setIsSpinning] = useState(false);
 
-  const startNewRound = () => {
+  const startNewRound = useCallback(() => {
     const currentSeoulTime = getSeoulTime();
     localStorage.setItem(roundStartKey, currentSeoulTime.toString());
     setTimeLeft(duration);
-  };
+  }, [duration, roundStartKey]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -170,11 +170,11 @@ function GamePlay() {
       }
     }, 1000);
     return () => clearInterval(timer);
-  }, [mode, duration, roundStartKey]);
+  }, [mode, duration, roundStartKey, startNewRound]);
 
   useEffect(() => {
     if (timeLeft === 0) {
-      const possibleResults = ['귀엽', '순수하', '직설적이', '섹시하'];
+      const possibleResults = ['大', '小', '单', '双'];
       const currentBets = JSON.parse(localStorage.getItem('currentBets') || '{}');
       const result1Index = Math.floor(Math.random() * possibleResults.length);
       let result2Index = Math.floor(Math.random() * possibleResults.length);
@@ -215,18 +215,18 @@ function GamePlay() {
       localStorage.setItem('currentBets', '{}');
       startNewRound();
     }
-  }, [timeLeft, duration]);
+  }, [timeLeft, duration, startNewRound]);
 
   const getDirectionLabel = (direction: string) => {
     switch (direction) {
-      case '귀엽':
-        return '귀엽';
-      case '순수하':
-        return '순수하';
-      case '직설적이':
-        return '직설적이';
-      case '섹시하':
-        return '섹시하';
+      case '大':
+        return '大';
+      case '小':
+        return '小';
+      case '单':
+        return '单';
+      case '双':
+        return '双';
       default:
         return '';
     }
@@ -307,10 +307,10 @@ function GamePlay() {
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-2 gap-6 max-w-md mx-auto">
           {[
-            { direction: '귀엽', label: '귀엽', gradient: 'from-pink-500 to-rose-500' },
-            { direction: '순수하', label: '순수하', gradient: 'from-purple-500 to-indigo-500' },
-            { direction: '직설적이', label: '직설적이', gradient: 'from-blue-500 to-cyan-500' },
-            { direction: '섹시하', label: '섹시하', gradient: 'from-orange-500 to-amber-500' }
+            { direction: '大', label: '大', gradient: 'from-pink-500 to-rose-500' },
+            { direction: '小', label: '小', gradient: 'from-purple-500 to-indigo-500' },
+            { direction: '单', label: '单', gradient: 'from-blue-500 to-cyan-500' },
+            { direction: '双', label: '双', gradient: 'from-orange-500 to-amber-500' }
           ].map(({ direction, label, gradient }) => (
             <button
               type="button"
