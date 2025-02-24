@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoginForm from '../components/LoginForm';
-import { login } from '../services/authService'; // 引入登录函数
+import { login } from '../../../server/services/authService'; // 引入登录函数
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
 // src/api/futureResults.ts
-import { supabase } from '../src/api/supabase';
+import { supabase } from '../api/supabase';
 import express from 'express';
 const app = express();
 

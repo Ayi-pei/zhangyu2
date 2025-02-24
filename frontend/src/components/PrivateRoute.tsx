@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // 修复导入路径
+import { useAuth } from '../components/AuthContext'; // 修复导入路径
 
 interface PrivateRouteProps {
   element: JSX.Element;

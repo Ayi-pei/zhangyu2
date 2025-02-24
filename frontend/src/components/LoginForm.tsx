@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../../../server/hooks/useAuth';
 
 interface LoginFormProps {
   onLoginSuccess: (username: string, password: string) => Promise<void>;

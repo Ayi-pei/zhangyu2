@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext'; // 使用新的 AuthProvider
+import { AuthProvider } from './components/AuthContext'; // 使用新的 AuthProvider
 import PrivateRoute from './components/PrivateRoute';
 import ProtectedRoute from './components/ProtectedRoute';
 

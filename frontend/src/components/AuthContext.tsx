@@ -127,4 +127,4 @@ const Counter = () => {
   );
 };
 
-export { AuthProvider, CountProvider, useCount, Counter };
+export { AuthProvider, CountProvider, uerCounter, Counter };

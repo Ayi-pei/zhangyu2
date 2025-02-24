@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../api/supabase';
+import { supabase } from '../../frontend/src/api/supabase';
 import { Session, AuthChangeEvent } from '@supabase/supabase-js';
 
 interface User {

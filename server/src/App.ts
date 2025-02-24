@@ -5,8 +5,8 @@ import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import { supabase } from './api/supabase';
-import routes from './routes';
+import { supabase } from '../api/supabase';
+import routes from '../routes';
 
 const app = express();
 const port = process.env.PORT || 5000;

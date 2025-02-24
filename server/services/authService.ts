@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { logError } from '../utils/logger';
+import { logError } from '../../frontend/src/utils/logger';
 
 // 创建 Supabase 客户端实例
 const supabaseUrl = 'https://your-project-id.supabase.co'; // 请替换为你的 Supabase 项目 URL
