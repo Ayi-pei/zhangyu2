@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../api/supabase';
+import { Session, AuthChangeEvent } from '@supabase/supabase-js';
 
 interface User {
   id: string;
@@ -11,15 +12,18 @@ export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const session = supabase.auth.session();
-    setUser(session?.user ?? null);
+    async function getSessionAndUpdateUser() {
+      const { data } = await supabase.auth.getSession();
+      setUser(data.session?.user as User ?? null);
+    }
+    getSessionAndUpdateUser();
 
-    const { data: authListener } = supabase.auth.onAuthStateChange((_event: string, session: { user: User | null }) => {
-      setUser(session?.user ?? null);
+    const { data: authListener } = supabase.auth.onAuthStateChange((event: AuthChangeEvent, session: Session | null) => {
+      setUser(session?.user as User ?? null);
     });
 
     return () => {
-      authListener?.unsubscribe();
+      authListener?.subscription.unsubscribe();
     };
   }, []);
 
@@ -28,9 +32,9 @@ export function useAuth() {
   };
 
   const login = async (email: string, password: string) => {
-    const { user, error } = await supabase.auth.signIn({ email, password });
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
-    setUser(user);
+    setUser(data.user as User);
   };
 
   const logout = async () => {

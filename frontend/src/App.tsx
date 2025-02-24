@@ -27,7 +27,7 @@ function App() {
     console.log('客服对话框关闭');
   };
 
-  const handleLoginSuccess = async (username: string, password: string) => {
+  const handleLoginSuccess = async (username: string) => {
     console.log('登录成功:', username);
   };
 
@@ -45,7 +45,7 @@ function App() {
             <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
             <Route path="/history" element={<PrivateRoute element={<History />} />} />
             <Route path="/play/:mode/:gameId" element={<PrivateRoute element={<GamePlay />} />} />
-            <Route path="/gameplay" element={<ProtectedRoute element={<GamePlay />} />} />
+            <Route path="/gameplay" element={<ProtectedRoute path="/gameplay" component={GamePlay} />} />
 
             <Route
               path="/bindingform"

@@ -16,10 +16,11 @@
 
     /* Bundler mode */
     "moduleResolution": "node",
-    "allowImportingTsExtensions": true,
+    // "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force", //  使用 node 模式
-    "noEmit": true,
+    "noEmit": false, // 修改为 false 以启用编译输出
+    "outDir": "./dist", // 指定输出目录为 dist
 
     /* Linting */
     "strict": true, // ✅ 启用严格模式，减少类型错误
@@ -27,6 +28,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "../vite-env.d.ts", "../react-feather.d.ts"],
+  "include": ["./src", "./vite-env.d.ts", "./react-feather.d.ts"], // 修正路径
   "exclude": ["node_modules", "dist"]
 }

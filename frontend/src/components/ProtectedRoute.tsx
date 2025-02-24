@@ -3,7 +3,7 @@ import { Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
 interface ProtectedRouteProps {
-  component: React.ComponentType<any>;
+  component: React.ComponentType<unknown>;
   path: string;
   exact?: boolean;
 }
