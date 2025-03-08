@@ -20,7 +20,7 @@
     "helmet": "^8.0.0",
     "hls.js": "^1.5.20",
     "jsonwebtoken": "^9.0.2",
-    "lucide-react": "^0.344.0",
+    "lucide-react": "^0.475.0",
     "morgan": "^1.10.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
