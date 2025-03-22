@@ -27,7 +27,7 @@
     "react-feather": "^2.0.10",
     "react-icons": "^5.4.0",
     "react-player": "^2.16.0",
-    "react-router-dom": "^6.22.3",
+    "react-router-dom": "^6.30.0",
     "wouter": "^3.5.1"
   },
   "devDependencies": {
